@@ -1,7 +1,7 @@
 {
-  "name": "Eternity Chrono",
+  "name": "Eternity Chrono: Timer & Stopwatch",
   "short_name": "Eternity",
-  "start_url": "./",
+  "start_url": "./index.html",
   "display": "fullscreen",
   "background_color": "#000000",
   "theme_color": "#000000",
