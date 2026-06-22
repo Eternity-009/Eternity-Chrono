@@ -1,3 +1,11 @@
+<!-- 
+=========================================================
+* App Name: Eternity Chrono (Timer & Stopwatch)
+* Designer & Developer: Eternity-009
+* Copyright: © 2026 Eternity-009. All rights reserved.
+* Unauthorized copying of this design is strictly prohibited.
+=========================================================
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -317,6 +325,23 @@
         let rafId = null;
         let alarmTimeout = null;
         let audioCtx = null;
+        let wakeLock = null;
+
+        // Screen ko ON rakhne wala function
+        async function requestWakeLock() {
+            try {
+                if ('wakeLock' in navigator) {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                }
+            } catch (err) { console.log("Wake Lock Error:", err); }
+        }
+
+        // Screen ko wapas normal karne wala function
+        function releaseWakeLock() {
+            if (wakeLock !== null) {
+                wakeLock.release().then(() => { wakeLock = null; });
+            }
+        }
 
         function padZero(num, length) {
             let str = String(num);
@@ -510,12 +535,14 @@
             else {
                 if (mode === 'timer' && currentTimerMs <= 0) return;
                 isRunning = true; lastTime = Date.now();
+                requestWakeLock(); // Screen on rakhne ka command
                 saveState(); rafId = requestAnimationFrame(loop);
             }
         }
 
         function stopRunning() {
             isRunning = false; cancelAnimationFrame(rafId);
+            releaseWakeLock(); // Screen normal karne ka command
             saveState(); renderDisplay();
         }
 
@@ -624,7 +651,15 @@
         }
 
         window.addEventListener('beforeunload', saveState);
-        document.addEventListener('visibilitychange', () => { if(document.visibilityState === 'hidden') saveState(); });
+        
+        // Visibility Change par Wake Lock handle karna
+        document.addEventListener('visibilitychange', () => { 
+            if(document.visibilityState === 'hidden') {
+                saveState(); 
+            } else if (isRunning) {
+                requestWakeLock(); // Wapas aane par screen on rakho
+            }
+        });
 
         document.addEventListener("DOMContentLoaded", () => {
             if (!restoreState()) renderDisplay();
