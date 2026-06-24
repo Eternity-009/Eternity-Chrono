@@ -1,14 +1,8 @@
-[
-  {
-    "relation": [
-      "delegate_permission/common.handle_all_urls"
-    ],
-    "target": {
-      "namespace": "android_app",
-      "package_name": "io.github.eternity_009.twa",
-      "sha256_cert_fingerprints": [
-        "F8:6E:6F:B2:45:ED:D9:79:B4:15:78:AF:C7:57:2E:12:78:6F:91:E4:F7:85:E9:5F:9C:FC:62:3B:31:5D:56:B2"
-      ]
-    }
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "io.github.eternity_009.twa",
+    "sha256_cert_fingerprints": ["F8:6E:6F:B2:45:ED:D9:79:B4:15:78:AF:C7:57:2E:12:78:6F:91:E4:F7:85:E9:5F:9C:FC:62:3B:31:5D:56:B2"]
   }
-]
+}]
