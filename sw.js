@@ -1,4 +1,4 @@
-const CACHE_NAME = 'eternity-chrono-v4'; // Version v4 kar diya hai taaki naya force update ho
+const CACHE_NAME = 'eternity-chrono-v4';
 const urlsToCache = [
   './',
   './index.html',
@@ -19,17 +19,17 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        // Agar file cache mein hai toh wahi se do (Offline mode)
+        // Agar file cache mein hai toh wahi se do (Offline chalega)
         if (response) {
           return response;
         }
-        // Warna internet se download karo
+        // Warna net se uthao
         return fetch(event.request);
       })
   );
 });
 
-// Purane version ke cache ko delete karne ke liye taaki hamesha naya update (Wake Lock) mile
+// Purane cache ko delete karne ke liye taaki hamesha naya update mile
 self.addEventListener('activate', event => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
