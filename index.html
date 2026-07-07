@@ -10,10 +10,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <title>Eternity Chrono | Distraction-Free Timer for Study, Gym & Productivity</title>
+    <meta name="description" content="Eternity Chrono is a minimalist, Casio-style digital timer and stopwatch with a screen wake-lock. Perfectly designed for NEET/JEE preparation, Pomodoro study sessions, gym workouts, yoga, cooking, and daily productivity.">
+    <meta name="keywords" content="digital timer, stopwatch, study timer for NEET, JEE timer, pomodoro timer, gym workout timer, kitchen timer, screen awake timer, eternity chrono, ad-free timer">
     <meta name="author" content="Eternity-009">
-    <title>Eternity Chrono - Digital Timer & Stopwatch</title>
-<link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+
+    <link rel="canonical" href="https://eternity-009.github.io/Eternity-Chrono/">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+
+    <meta property="og:title" content="Eternity Chrono - The Ultimate Focus Timer">
+    <meta property="og:description" content="A distraction-free digital timer for studying, workouts, and productivity. Features a classic retro interface and keeps your screen awake while running.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://eternity-009.github.io/Eternity-Chrono/">
+    <meta property="og:image" content="https://eternity-009.github.io/Eternity-Chrono/preview.jpg">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Eternity Chrono - The Ultimate Focus Timer">
+    <meta name="twitter:description" content="A distraction-free digital timer for absolute focus.">
+    <meta name="twitter:image" content="https://eternity-009.github.io/Eternity-Chrono/preview.jpg">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EEFZ65T8WZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){
+          if(navigator.onLine) {
+              try { dataLayer.push(arguments); } catch(e) {}
+          }
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-EEFZ65T8WZ');
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Eternity Chrono",
+      "url": "https://eternity-009.github.io/Eternity-Chrono/",
+      "description": "A premium, distraction-free Casio-style digital timer and stopwatch. Designed to solve real-world timing needs like mock tests for JEE/NEET, tracking gym rests, cooking, and using the Pomodoro technique. Includes a built-in screen wake-lock to ensure uninterrupted focus.",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Web, Android",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      },
+      "creator": {
+        "@type": "Person",
+        "name": "Eternity-009"
+      }
+    }
+    </script>
+
+    <link rel="manifest" href="manifest.json">
     <style>
         :root {
             --theme-bg: #7cb971;       
@@ -25,7 +77,8 @@
         * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
 
         body {
-            margin: 0; padding: 0;
+            margin: 0; 
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
             background-color: #000000;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex; justify-content: center; align-items: center;
@@ -81,13 +134,12 @@
         }
 
         .digit { flex: 1; max-width: 46px; height: 100%; transform: skewX(-3deg); }
-        .digit.small { flex: 1; max-width: 34px; height: 68%; align-self: flex-end; margin-bottom: 6px; }
         .colon-svg { flex: 0 0 12px; height: 100%; transform: skewX(-3deg); }
 
         .seg { fill: var(--lcd-ghost); stroke: var(--lcd-ghost); stroke-width: 0.8; transition: fill 0.1s ease; }
-        .seg.on { fill: var(--lcd-text); stroke: var(--lcd-text); stroke-width: 0.8; }
+        .seg.on { fill: var(--lcd-text); stroke: var(--lcd-text); stroke-width: 0.8; transition: filter 0.3s ease; }
         
-        .colon-mark { fill: var(--lcd-text); stroke: var(--lcd-text); stroke-width: 0.5; }
+        .colon-mark { fill: var(--lcd-text); stroke: var(--lcd-text); stroke-width: 0.5; transition: filter 0.3s ease; }
         .colon-mark.off { opacity: 0.05; }
 
         .lap-container {
@@ -128,6 +180,7 @@
             border-radius: 6px; cursor: pointer;
             box-shadow: 0 2px 0 #000000, 0 3px 4px rgba(0,0,0,0.7);
             text-transform: uppercase; text-align: center; line-height: 1.2;
+            transition: border 0.3s ease, box-shadow 0.3s ease;
         }
         button:active {
             transform: translateY(1px);
@@ -166,36 +219,73 @@
         @keyframes flash { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(0.3); } }
         .flashing { animation: flash 0.3s infinite; }
 
-        /* Multi-Themes */
+        /* THEMES */
         .device[data-theme="green"] { --theme-bg: #7cb971; --lcd-text: #000000; --lcd-ghost: rgba(0, 0, 0, 0.02); --rim-color: #7cb971; } 
-        .device[data-theme="blue"]  { --theme-bg: #5294e2; --lcd-text: #000000; --lcd-ghost: rgba(0, 0, 0, 0.02); --rim-color: #5294e2; } 
-        .device[data-theme="grey"]  { --theme-bg: #a6aeae; --lcd-text: #000000; --lcd-ghost: rgba(0, 0, 0, 0.02); --rim-color: #a6aeae; } 
-        .device[data-theme="dark-green"] { --theme-bg: #0d120d; --lcd-text: #00ff66; --lcd-ghost: rgba(0, 255, 102, 0.015); --rim-color: #00ff66; }
-        .device[data-theme="dark-cyan"]  { --theme-bg: #051414; --lcd-text: #00f5ff; --lcd-ghost: rgba(0, 245, 255, 0.015); --rim-color: #00f5ff; }
-        .device[data-theme="dark-amber"] { --theme-bg: #140f05; --lcd-text: #ff9f00; --lcd-ghost: rgba(255, 159, 0, 0.015); --rim-color: #ff9f00; }
-        .device[data-theme="dark-white"] { --theme-bg: #121315; --lcd-text: #ffffff; --lcd-ghost: rgba(255, 255, 255, 0.015); --rim-color: #ffffff; }
         .device[data-theme="classic-lcd"] { --theme-bg: #8aa682; --lcd-text: #1a2018; --lcd-ghost: rgba(26, 32, 24, 0.05); --rim-color: #8aa682; }
         .device[data-theme="retro-red"]   { --theme-bg: #0c0505; --lcd-text: #ff0a0a; --lcd-ghost: rgba(255, 10, 10, 0.04); --rim-color: #ff0a0a; }
+        .device[data-theme="blue"]  { --theme-bg: #5294e2; --lcd-text: #000000; --lcd-ghost: rgba(0, 0, 0, 0.02); --rim-color: #5294e2; } 
+        .device[data-theme="grey"]  { --theme-bg: #a6aeae; --lcd-text: #000000; --lcd-ghost: rgba(0, 0, 0, 0.02); --rim-color: #a6aeae; } 
         .device[data-theme="neon-pink"]   { --theme-bg: #12040c; --lcd-text: #ff1493; --lcd-ghost: rgba(255, 20, 147, 0.04); --rim-color: #ff1493; }
         .device[data-theme="cyberpunk"]   { --theme-bg: #090a14; --lcd-text: #fcee0a; --lcd-ghost: rgba(252, 238, 10, 0.04); --rim-color: #fcee0a; }
         .device[data-theme="gold"]        { --theme-bg: #141108; --lcd-text: #ffc107; --lcd-ghost: rgba(255, 193, 7, 0.04); --rim-color: #ffc107; }
-        .device[data-theme="oled-white"]  { --theme-bg: #000000; --lcd-text: #ffffff; --lcd-ghost: rgba(255, 255, 255, 0.04); --rim-color: #ffffff; }
+        .device[data-theme="dark-green"] { --theme-bg: #0d120d; --lcd-text: #00ff66; --lcd-ghost: rgba(0, 255, 102, 0.015); --rim-color: #00ff66; }
+        .device[data-theme="dark-cyan"]  { --theme-bg: #051414; --lcd-text: #00f5ff; --lcd-ghost: rgba(0, 245, 255, 0.015); --rim-color: #00f5ff; }
+        .device[data-theme="dark-white"] { --theme-bg: #121315; --lcd-text: #ffffff; --lcd-ghost: rgba(255, 255, 255, 0.015); --rim-color: #ffffff; }
 
-        /* FIXED LANDSCAPE LAYOUT */
+        .device[data-theme="imperial-blue"] { --theme-bg: #D9E8F7; --lcd-text: #0F2D5C; --lcd-ghost: rgba(15, 45, 92, 0.05); --rim-color: #2F5DAA; background: linear-gradient(145deg, #1A2942, #0A1128); }
+        .device[data-theme="midnight-navy"] { --theme-bg: #0F172A; --lcd-text: #8FD3FF; --lcd-ghost: rgba(143, 211, 255, 0.05); --rim-color: #2563EB; background: linear-gradient(145deg, #1E293B, #020617); }
+        .device[data-theme="midnight-navy"] .seg.on, .device[data-theme="midnight-navy"] .colon-mark:not(.off) { filter: drop-shadow(0 0 4px #8FD3FF); }
+        .device[data-theme="titanium-silver"] { --theme-bg: #ECEFF3; --lcd-text: #23262B; --lcd-ghost: rgba(35, 38, 43, 0.05); --rim-color: #B7BEC9; background: linear-gradient(145deg, #4B5563, #1F2937); }
+        .device[data-theme="royal-purple"] { --theme-bg: #150A2E; --lcd-text: #D8B4FE; --lcd-ghost: rgba(216, 180, 254, 0.05); --rim-color: #8B5CF6; background: linear-gradient(145deg, #2E1065, #000000); }
+        .device[data-theme="royal-purple"] .seg.on, .device[data-theme="royal-purple"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #C084FC); }
+        .device[data-theme="emerald-military"] { --theme-bg: #0D1F18; --lcd-text: #42F59E; --lcd-ghost: rgba(66, 245, 158, 0.05); --rim-color: #16A34A; background: linear-gradient(145deg, #14532D, #022C22); }
+        .device[data-theme="emerald-military"] .seg.on, .device[data-theme="emerald-military"] .colon-mark:not(.off) { filter: drop-shadow(0 0 4px #42F59E); }
+        .device[data-theme="arctic-ice"] { --theme-bg: #EAF7FF; --lcd-text: #004E7A; --lcd-ghost: rgba(0, 78, 122, 0.05); --rim-color: #38BDF8; background: linear-gradient(145deg, #0C4A6E, #020617); }
+        .device[data-theme="bronze-copper"] { --theme-bg: #1A120A; --lcd-text: #D89A52; --lcd-ghost: rgba(216, 154, 82, 0.05); --rim-color: #B87333; background: linear-gradient(145deg, #451A03, #2E1002); }
+        .device[data-theme="crimson-red"] { --theme-bg: #180708; --lcd-text: #FF5A5A; --lcd-ghost: rgba(255, 90, 90, 0.05); --rim-color: #DC2626; background: linear-gradient(145deg, #450A0A, #000000); }
+        .device[data-theme="crimson-red"] .seg.on, .device[data-theme="crimson-red"] .colon-mark:not(.off) { filter: drop-shadow(0 0 5px #FF5A5A); }
+        .device[data-theme="matrix-green"] { --theme-bg: #07130A; --lcd-text: #00FF66; --lcd-ghost: rgba(0, 255, 102, 0.05); --rim-color: #00C853; background: linear-gradient(145deg, #064E3B, #022C22); }
+        .device[data-theme="matrix-green"] .seg.on, .device[data-theme="matrix-green"] .colon-mark:not(.off) { filter: drop-shadow(0 0 8px #00FF66); }
+        .device[data-theme="golden-black"] { --theme-bg: #121212; --lcd-text: #FFD54F; --lcd-ghost: rgba(255, 213, 79, 0.05); --rim-color: #C9A227; background: linear-gradient(145deg, #27272A, #000000); }
+        .device[data-theme="golden-black"] .seg.on, .device[data-theme="golden-black"] .colon-mark:not(.off) { filter: drop-shadow(0 0 4px #FFD54F); }
+
+        .device[data-theme="midnight-sapphire"] { --theme-bg: #181C2A; --lcd-text: #6FAEFF; --lcd-ghost: rgba(111, 174, 255, 0.05); --rim-color: #3D7CFF; background: linear-gradient(145deg, #181C2A, #0A0D14); }
+        .device[data-theme="midnight-sapphire"] .seg.on, .device[data-theme="midnight-sapphire"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #6FAEFF); }
+        .device[data-theme="royal-amethyst"] { --theme-bg: #241A3A; --lcd-text: #B88CFF; --lcd-ghost: rgba(184, 140, 255, 0.05); --rim-color: #8A5CFF; background: linear-gradient(145deg, #241A3A, #0D0814); }
+        .device[data-theme="royal-amethyst"] .seg.on, .device[data-theme="royal-amethyst"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #B88CFF); }
+        .device[data-theme="aurora"] { --theme-bg: #1A2438; --lcd-text: #56D7FF; --lcd-ghost: rgba(86, 215, 255, 0.05); --rim-color: #9D4EDD; background: linear-gradient(145deg, #1A2438, #0B101A); }
+        .device[data-theme="aurora"] .seg.on, .device[data-theme="aurora"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #56D7FF); }
+        .device[data-theme="emerald-luxe"] { --theme-bg: #15241D; --lcd-text: #59FFB5; --lcd-ghost: rgba(89, 255, 181, 0.05); --rim-color: #1FD18A; background: linear-gradient(145deg, #15241D, #080D0A); }
+        .device[data-theme="emerald-luxe"] .seg.on, .device[data-theme="emerald-luxe"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #59FFB5); }
+        .device[data-theme="champagne-gold"] { --theme-bg: #222222; --lcd-text: #FFE9A6; --lcd-ghost: rgba(255, 233, 166, 0.05); --rim-color: #D4AF37; background: linear-gradient(145deg, #222222, #000000); }
+        .device[data-theme="champagne-gold"] .seg.on, .device[data-theme="champagne-gold"] .colon-mark:not(.off) { filter: drop-shadow(0 0 5px #FFE9A6); }
+        .device[data-theme="volcanic-orange"] { --theme-bg: #1B1B1B; --lcd-text: #FFB347; --lcd-ghost: rgba(255, 179, 71, 0.05); --rim-color: #FF6A00; background: linear-gradient(145deg, #1B1B1B, #0A0A0A); }
+        .device[data-theme="volcanic-orange"] .seg.on, .device[data-theme="volcanic-orange"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #FFB347); }
+        .device[data-theme="deep-ocean"] { --theme-bg: #0F2430; --lcd-text: #72D9FF; --lcd-ghost: rgba(114, 217, 255, 0.05); --rim-color: #00AEEF; background: linear-gradient(145deg, #0F2430, #050C12); }
+        .device[data-theme="deep-ocean"] .seg.on, .device[data-theme="deep-ocean"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #72D9FF); }
+        .device[data-theme="ruby-crimson"] { --theme-bg: #241517; --lcd-text: #FF8A8A; --lcd-ghost: rgba(255, 138, 138, 0.05); --rim-color: #D62839; background: linear-gradient(145deg, #241517, #0D0708); }
+        .device[data-theme="ruby-crimson"] .seg.on, .device[data-theme="ruby-crimson"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #FF8A8A); }
+
+        .device[data-theme="dark-amber"] { --theme-bg: #140f05; --lcd-text: #ff9f00; --lcd-ghost: rgba(255, 159, 0, 0.015); --rim-color: #ff9f00; }
+
+        /* FIXED LANDSCAPE LAYOUT WITH SAFE AREA (NOTCH) SUPPORT */
         @media (orientation: landscape) {
             body { padding: 0; margin: 0; background-color: #000000; }
             .device {
                 max-width: none; width: 100vw; height: 100vh;
-                border-radius: 0; border: none; padding: 4px 6px; gap: 2px;
+                border-radius: 0; border: none; gap: 2px;
                 display: flex; flex-direction: column; justify-content: space-between;
                 box-shadow: inset 0 0 0 3px var(--rim-color); 
+                padding-top: max(4px, env(safe-area-inset-top));
+                padding-bottom: max(4px, env(safe-area-inset-bottom));
+                padding-left: max(6px, env(safe-area-inset-left));
+                padding-right: max(6px, env(safe-area-inset-right));
             }
             .bezel { flex: 1; padding: 2px; border-radius: 0; box-shadow: none; height: auto; }
             .screen { flex: 1; height: 100%; border-radius: 0; padding: 4px 16px; display: flex; flex-direction: column; justify-content: flex-start; }
             
             .display-container { height: 68vh; max-width: 98%; gap: 4px; margin-top: 2vh; } 
             .digit { max-width: none; height: 100%; }
-            .digit.small { max-width: none; height: 65%; margin-bottom: 10px; }
             .colon-svg { flex: 0 0 2.5vw; height: 100%; }
 
             .brand-panel {
@@ -219,6 +309,12 @@
                 opacity: 0.95;
             }
         }
+
+        /* SEO Invisible Text */
+        .visually-hidden {
+            position: absolute; width: 1px; height: 1px; margin: -1px; 
+            padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;
+        }
     </style>
 </head>
 <body>
@@ -232,16 +328,16 @@
 
                 <div class="modal" id="modal">
                     <div class="modal-input-wrapper">
-                        <input type="number" id="input-h" min="0" max="99" placeholder="00" inputmode="numeric" pattern="[0-9]*">
+                        <input type="number" id="input-h" min="0" max="99" placeholder="00" inputmode="numeric" pattern="[0-9]*" aria-label="Hours">
                         <span>:</span>
-                        <input type="number" id="input-m" min="0" max="59" placeholder="00" inputmode="numeric" pattern="[0-9]*">
+                        <input type="number" id="input-m" min="0" max="59" placeholder="00" inputmode="numeric" pattern="[0-9]*" aria-label="Minutes">
                         <span>:</span>
-                        <input type="number" id="input-s" min="0" max="59" placeholder="00" inputmode="numeric" pattern="[0-9]*">
+                        <input type="number" id="input-s" min="0" max="59" placeholder="00" inputmode="numeric" pattern="[0-9]*" aria-label="Seconds">
                     </div>
                     <div class="modal-grid" id="modal-grid-box"></div>
                     <div class="modal-actions">
-                        <span class="btn-cancel" id="m-cancel">Cancel</span>
-                        <span class="btn-ok" id="m-ok">OK</span>
+                        <span class="btn-cancel" id="m-cancel" role="button" tabindex="0">Cancel</span>
+                        <span class="btn-ok" id="m-ok" role="button" tabindex="0">OK</span>
                     </div>
                 </div>
             </div>
@@ -250,36 +346,32 @@
         <div class="brand-panel">
             <div class="hardware-brand" id="brand-header">ETERNITY CHRONO</div>
             
-            <svg class="panel-icon" id="btn-sound" viewBox="0 0 24 24" onclick="toggleSoundMaster()">
+            <svg class="panel-icon" id="btn-sound" viewBox="0 0 24 24" onclick="toggleSoundMaster()" aria-label="Toggle Sound" role="button" tabindex="0">
                 <path id="sound-path" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
             </svg>
             
-            <svg class="panel-icon" id="btn-fs" viewBox="0 0 24 24" onclick="toggleFullScreen()">
+            <svg class="panel-icon" id="btn-fs" viewBox="0 0 24 24" onclick="toggleFullScreen()" aria-label="Toggle Fullscreen" role="button" tabindex="0">
                 <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
             </svg>
         </div>
 
         <div class="controls">
-            <button id="btn-start">Start<br>Stop</button>
-            <button id="btn-menu-lap">Menu</button>
-            <button id="btn-reset">Reset</button>
-            <button id="btn-theme">Theme</button>
-            <button id="btn-mode">Mode</button>
+            <button id="btn-start" aria-label="Start or Stop">Start<br>Stop</button>
+            <button id="btn-menu-lap" aria-label="Menu or Lap">Menu</button>
+            <button id="btn-reset" aria-label="Reset Timer">Reset</button>
+            <button id="btn-theme" aria-label="Change Theme">Theme</button>
+            <button id="btn-mode" aria-label="Switch Mode">Mode</button>
         </div>
     </div>
 
+    <div class="visually-hidden">
+        Eternity Chrono: Distraction-free digital timer built for absolute focus. Highly optimized for NEET and JEE study sessions, Pomodoro tracking, cooking, and intense gym workouts.
+    </div>
+
     <script>
-        // Security Shield & Console Warning
+        // Warning in Console
         console.log("%cHold Up! ✋", "color: red; font-size: 40px; font-weight: bold;");
         console.log("%cThis UI/UX Design and Code is proudly created and owned by Eternity-009. Please do not copy.", "color: #00ff00; font-size: 16px;");
-
-        document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
-        document.addEventListener('keydown', function(e) {
-          if (e.key === 'F12' || e.keyCode === 123) e.preventDefault();
-          if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) e.preventDefault();
-          if (e.ctrlKey && e.key === 'U') e.preventDefault();
-        });
-        document.addEventListener('copy', function(e) { e.preventDefault(); });
 
         const segmentSvg = '<svg class="digit" viewBox="0 0 60 96">' +
             '<polygon class="seg a" points="13,2 47,2 51,6 47,10 13,10 9,6" />' +
@@ -300,14 +392,17 @@
         const segmentNames = ['a','b','c','d','e','f','g'];
         
         const themes = [
-            'green', 'classic-lcd', 'retro-red', 'blue', 'grey', 
-            'neon-pink', 'cyberpunk', 'gold', 'oled-white', 
-            'dark-green', 'dark-cyan', 'dark-amber', 'dark-white'
+            'green', 'classic-lcd', 'retro-red', 'blue', 'grey', 'neon-pink', 'cyberpunk', 'gold', 
+            'dark-green', 'dark-cyan', 'dark-white', 'imperial-blue', 'midnight-navy', 'titanium-silver', 
+            'royal-purple', 'emerald-military', 'arctic-ice', 'bronze-copper', 'crimson-red', 
+            'matrix-green', 'golden-black', 'midnight-sapphire', 'royal-amethyst', 'aurora', 
+            'emerald-luxe', 'champagne-gold', 'volcanic-orange', 'deep-ocean', 'ruby-crimson', 'dark-amber'
         ];
 
         const soundPathOn = "M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z";
         const soundPathOff = "M4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z";
-        const PERSIST_KEY = "LAVISH_TIMER_PERSIST_V2";
+        
+        const PERSIST_KEY = "LAVISH_TIMER_PERSIST_V3";
 
         let activeLayout = ""; 
         let mode = 'timer'; 
@@ -322,24 +417,37 @@
         
         let lastTime = 0;
         let lastSaveTime = 0;
+        let lastRenderTime = 0;
+        const fpsInterval = 1000 / 30; // 30 FPS throttle
         let rafId = null;
         let alarmTimeout = null;
         let audioCtx = null;
         let wakeLock = null;
 
-        // Screen ko ON rakhne wala function
+        const noSleepVideo = document.createElement('video');
+        noSleepVideo.setAttribute('playsinline', '');
+        noSleepVideo.setAttribute('muted', '');
+        noSleepVideo.setAttribute('loop', '');
+        noSleepVideo.src = "data:video/webm;base64,GkXfo59ChoEBQveBAULygQRC84EIQoKEd2VibUKHgQJChYECGWCBlGNvbXBNR0kyT0dNNU1XWTJOR1l6WldabVptSm1aV1ptWm1KbVpXWm1abVpoQoOBA0KFA0OAhwEAAIDGCAAAgIgAAIECQAABA0EAQYSEh12BwgT7gICAAALB2YHB4gQCAgABwaIECQAABA0EAQYSEh12BwgT7gICAAALB2YHB4gQCAgABw==";
+
         async function requestWakeLock() {
             try {
                 if ('wakeLock' in navigator) {
                     wakeLock = await navigator.wakeLock.request('screen');
+                } else {
+                    noSleepVideo.play().catch(e => console.log("NoSleep fallback failed", e));
                 }
-            } catch (err) { console.log("Wake Lock Error:", err); }
+            } catch (err) { 
+                console.log("Wake Lock Error:", err); 
+                noSleepVideo.play().catch(()=>{}); 
+            }
         }
 
-        // Screen ko wapas normal karne wala function
         function releaseWakeLock() {
             if (wakeLock !== null) {
                 wakeLock.release().then(() => { wakeLock = null; });
+            } else {
+                noSleepVideo.pause();
             }
         }
 
@@ -355,12 +463,12 @@
                 timerSetMs, currentTimerMs, stopwatchMs, laps,
                 timestamp: Date.now()
             };
-            try { sessionStorage.setItem(PERSIST_KEY, JSON.stringify(stateObj)); } catch(e){}
+            try { localStorage.setItem(PERSIST_KEY, JSON.stringify(stateObj)); } catch(e){}
         }
 
         function restoreState() {
             try {
-                const raw = sessionStorage.getItem(PERSIST_KEY);
+                const raw = localStorage.getItem(PERSIST_KEY);
                 if (!raw) return false;
                 const s = JSON.parse(raw);
 
@@ -431,8 +539,8 @@
                                     segmentSvg.replace('class="digit"', 'id="d2" class="digit"') + colonSvg +
                                     segmentSvg.replace('class="digit"', 'id="d3" class="digit"') +
                                     segmentSvg.replace('class="digit"', 'id="d4" class="digit"') + colonSvg +
-                                    segmentSvg.replace('class="digit"', 'id="d5" class="digit small"') +
-                                    segmentSvg.replace('class="digit"', 'id="d6" class="digit small"');
+                                    segmentSvg.replace('class="digit"', 'id="d5" class="digit"') +
+                                    segmentSvg.replace('class="digit"', 'id="d6" class="digit"');
             } else if (requiredLayout === "HMSms") {
                 display.innerHTML = segmentSvg.replace('class="digit"', 'id="d1" class="digit"') +
                                     segmentSvg.replace('class="digit"', 'id="d2" class="digit"') + colonSvg +
@@ -440,8 +548,8 @@
                                     segmentSvg.replace('class="digit"', 'id="d4" class="digit"') + colonSvg +
                                     segmentSvg.replace('class="digit"', 'id="d5" class="digit"') +
                                     segmentSvg.replace('class="digit"', 'id="d6" class="digit"') + colonSvg +
-                                    segmentSvg.replace('class="digit"', 'id="d7" class="digit small"') +
-                                    segmentSvg.replace('class="digit"', 'id="d8" class="digit small"');
+                                    segmentSvg.replace('class="digit"', 'id="d7" class="digit"') +
+                                    segmentSvg.replace('class="digit"', 'id="d8" class="digit"');
             }
         }
 
@@ -470,7 +578,11 @@
                 }
             } else { stopwatchMs += delta; }
 
-            renderDisplay();
+            // 30 FPS Throttle to save battery
+            if (now - lastRenderTime >= fpsInterval) {
+                renderDisplay();
+                lastRenderTime = now;
+            }
 
             if (now - lastSaveTime > 500) { saveState(); lastSaveTime = now; }
             rafId = requestAnimationFrame(loop);
@@ -535,14 +647,14 @@
             else {
                 if (mode === 'timer' && currentTimerMs <= 0) return;
                 isRunning = true; lastTime = Date.now();
-                requestWakeLock(); // Screen on rakhne ka command
+                requestWakeLock();
                 saveState(); rafId = requestAnimationFrame(loop);
             }
         }
 
         function stopRunning() {
             isRunning = false; cancelAnimationFrame(rafId);
-            releaseWakeLock(); // Screen normal karne ka command
+            releaseWakeLock();
             saveState(); renderDisplay();
         }
 
@@ -571,7 +683,10 @@
 
         function closeModal() {
             document.getElementById('modal').classList.remove('open');
-            document.querySelectorAll('.modal-input-wrapper input').forEach(input => input.blur());
+            document.querySelectorAll('.modal-input-wrapper input').forEach(input => {
+                if(input.value.length === 1) input.value = '0' + input.value;
+                input.blur();
+            });
         }
 
         function quickAdjust(secs) {
@@ -606,7 +721,6 @@
             if (isSoundEnabled) playBeep();
         };
 
-        // Fullscreen Toggle Logic
         window.toggleFullScreen = function() {
             initAudio();
             const doc = window.document;
@@ -616,10 +730,15 @@
             const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
 
             if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-                requestFullScreen.call(docEl);
+                if (requestFullScreen) {
+                    let promise = requestFullScreen.call(docEl);
+                    if(promise) promise.catch(err => console.log("Fullscreen API error:", err));
+                } else if (docEl.webkitEnterFullscreen) {
+                    docEl.webkitEnterFullscreen();
+                }
             }
             else {
-                cancelFullScreen.call(doc);
+                if (cancelFullScreen) cancelFullScreen.call(doc).catch(err => console.log(err));
             }
         };
 
@@ -650,14 +769,17 @@
             if (alarmTimeout) { clearInterval(alarmTimeout); alarmTimeout = null; } 
         }
 
+        // Advanced State Saving Events
         window.addEventListener('beforeunload', saveState);
+        window.addEventListener('pagehide', saveState);
+        document.addEventListener('freeze', saveState);
         
-        // Visibility Change par Wake Lock handle karna
         document.addEventListener('visibilitychange', () => { 
             if(document.visibilityState === 'hidden') {
                 saveState(); 
-            } else if (isRunning) {
-                requestWakeLock(); // Wapas aane par screen on rakho
+            } else {
+                if (isRunning) requestWakeLock(); 
+                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
             }
         });
 
@@ -692,6 +814,7 @@
                     if (isRunning) {
                         const { h, m, s, ms } = formatTime(stopwatchMs);
                         const str = h > 0 ? `${padZero(h,2)}:${padZero(m,2)}:${padZero(s,2)}` : `${padZero(m,2)}:${padZero(s,2)}.${padZero(ms,2)}`;
+                        if (laps.length >= 300) laps.shift(); 
                         laps.push(str); saveState(); renderLaps();
                     }
                 }
@@ -699,6 +822,14 @@
 
             document.getElementById('m-cancel').addEventListener('click', closeModal);
             document.getElementById('m-ok').addEventListener('click', acceptModalInput);
+
+            // Modal Keyboard Support
+            document.addEventListener('keydown', (e) => {
+                if (document.getElementById('modal').classList.contains('open')) {
+                    if (e.key === 'Enter') acceptModalInput();
+                    if (e.key === 'Escape') closeModal();
+                }
+            });
 
             const gridBox = document.getElementById('modal-grid-box');
             const cfgs = [
@@ -720,7 +851,8 @@
             document.querySelectorAll('.modal-input-wrapper input').forEach(inp => {
                 inp.addEventListener('input', (e) => {
                     let max = parseInt(e.target.max, 10);
-                    if (parseInt(e.target.value, 10) > max) e.target.value = max;
+                    let val = parseInt(e.target.value, 10) || 0;
+                    if (val > max) e.target.value = max; 
                     if (e.target.value.length > 2) e.target.value = e.target.value.slice(0, 2);
                 });
             });
@@ -729,7 +861,9 @@
     <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js');
+      navigator.serviceWorker.register('./sw.js').catch(err => {
+         console.log('ServiceWorker registration failed: ', err);
+      });
     });
   }
 </script>
