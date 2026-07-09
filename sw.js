@@ -1,4 +1,4 @@
-const CACHE_NAME = 'eternity-chrono-v4';
+const CACHE_NAME = 'eternity-chrono-v5'; // <-- YAHAN v4 ko v5 kar diya hai
 const urlsToCache = [
   './',
   './index.html',
