@@ -85,12 +85,13 @@
             min-height: 100vh; overflow: hidden;
         }
 
+        /* LIGHT CUTOFF FIX: Width changed to 90% */
         .device {
             border-radius: 14px;
             padding: 10px;
             box-shadow: 0 0 0 2px var(--rim-color), 0 25px 55px rgba(0,0,0,0.95), inset 0 1.5px 1.5px rgba(255,255,255,0.15);
-            width: 96%;
-            max-width: 430px;
+            width: 90%; 
+            max-width: 415px;
             display: flex; flex-direction: column; gap: 8px;
             transition: all 0.3s ease;
             background: linear-gradient(145deg, #232528, #131416); 
@@ -191,7 +192,7 @@
             position: absolute; inset: 0; background: #08090a; z-index: 10;
             display: flex; flex-direction: column; padding: 6px; color: #fff;
             transform: translateY(100%); transition: transform 0.2s ease-out;
-            border-radius: 5px; justify-content: space-between;
+            border-radius: 6px; justify-content: space-between;
         }
         .modal.open { transform: translateY(0); }
         
@@ -219,7 +220,9 @@
         @keyframes flash { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(0.3); } }
         .flashing { animation: flash 0.3s infinite; }
 
-        /* THEMES */
+        /* =========================================
+           1. FIRST 10 THEMES (100% UNTOUCHED ORIGINAL)
+           ========================================= */
         .device[data-theme="green"] { --theme-bg: #7cb971; --lcd-text: #000000; --lcd-ghost: rgba(0, 0, 0, 0.02); --rim-color: #7cb971; } 
         .device[data-theme="classic-lcd"] { --theme-bg: #8aa682; --lcd-text: #1a2018; --lcd-ghost: rgba(26, 32, 24, 0.05); --rim-color: #8aa682; }
         .device[data-theme="retro-red"]   { --theme-bg: #0c0505; --lcd-text: #ff0a0a; --lcd-ghost: rgba(255, 10, 10, 0.04); --rim-color: #ff0a0a; }
@@ -230,87 +233,133 @@
         .device[data-theme="gold"]        { --theme-bg: #141108; --lcd-text: #ffc107; --lcd-ghost: rgba(255, 193, 7, 0.04); --rim-color: #ffc107; }
         .device[data-theme="dark-green"] { --theme-bg: #0d120d; --lcd-text: #00ff66; --lcd-ghost: rgba(0, 255, 102, 0.015); --rim-color: #00ff66; }
         .device[data-theme="dark-cyan"]  { --theme-bg: #051414; --lcd-text: #00f5ff; --lcd-ghost: rgba(0, 245, 255, 0.015); --rim-color: #00f5ff; }
-        .device[data-theme="dark-white"] { --theme-bg: #121315; --lcd-text: #ffffff; --lcd-ghost: rgba(255, 255, 255, 0.015); --rim-color: #ffffff; }
 
-        .device[data-theme="imperial-blue"] { --theme-bg: #D9E8F7; --lcd-text: #0F2D5C; --lcd-ghost: rgba(15, 45, 92, 0.05); --rim-color: #2F5DAA; background: linear-gradient(145deg, #1A2942, #0A1128); }
-        .device[data-theme="midnight-navy"] { --theme-bg: #0F172A; --lcd-text: #8FD3FF; --lcd-ghost: rgba(143, 211, 255, 0.05); --rim-color: #2563EB; background: linear-gradient(145deg, #1E293B, #020617); }
-        .device[data-theme="midnight-navy"] .seg.on, .device[data-theme="midnight-navy"] .colon-mark:not(.off) { filter: drop-shadow(0 0 4px #8FD3FF); }
-        .device[data-theme="titanium-silver"] { --theme-bg: #ECEFF3; --lcd-text: #23262B; --lcd-ghost: rgba(35, 38, 43, 0.05); --rim-color: #B7BEC9; background: linear-gradient(145deg, #4B5563, #1F2937); }
-        .device[data-theme="royal-purple"] { --theme-bg: #150A2E; --lcd-text: #D8B4FE; --lcd-ghost: rgba(216, 180, 254, 0.05); --rim-color: #8B5CF6; background: linear-gradient(145deg, #2E1065, #000000); }
-        .device[data-theme="royal-purple"] .seg.on, .device[data-theme="royal-purple"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #C084FC); }
-        .device[data-theme="emerald-military"] { --theme-bg: #0D1F18; --lcd-text: #42F59E; --lcd-ghost: rgba(66, 245, 158, 0.05); --rim-color: #16A34A; background: linear-gradient(145deg, #14532D, #022C22); }
-        .device[data-theme="emerald-military"] .seg.on, .device[data-theme="emerald-military"] .colon-mark:not(.off) { filter: drop-shadow(0 0 4px #42F59E); }
-        .device[data-theme="arctic-ice"] { --theme-bg: #EAF7FF; --lcd-text: #004E7A; --lcd-ghost: rgba(0, 78, 122, 0.05); --rim-color: #38BDF8; background: linear-gradient(145deg, #0C4A6E, #020617); }
-        .device[data-theme="bronze-copper"] { --theme-bg: #1A120A; --lcd-text: #D89A52; --lcd-ghost: rgba(216, 154, 82, 0.05); --rim-color: #B87333; background: linear-gradient(145deg, #451A03, #2E1002); }
-        .device[data-theme="crimson-red"] { --theme-bg: #180708; --lcd-text: #FF5A5A; --lcd-ghost: rgba(255, 90, 90, 0.05); --rim-color: #DC2626; background: linear-gradient(145deg, #450A0A, #000000); }
-        .device[data-theme="crimson-red"] .seg.on, .device[data-theme="crimson-red"] .colon-mark:not(.off) { filter: drop-shadow(0 0 5px #FF5A5A); }
-        .device[data-theme="matrix-green"] { --theme-bg: #07130A; --lcd-text: #00FF66; --lcd-ghost: rgba(0, 255, 102, 0.05); --rim-color: #00C853; background: linear-gradient(145deg, #064E3B, #022C22); }
-        .device[data-theme="matrix-green"] .seg.on, .device[data-theme="matrix-green"] .colon-mark:not(.off) { filter: drop-shadow(0 0 8px #00FF66); }
-        .device[data-theme="golden-black"] { --theme-bg: #121212; --lcd-text: #FFD54F; --lcd-ghost: rgba(255, 213, 79, 0.05); --rim-color: #C9A227; background: linear-gradient(145deg, #27272A, #000000); }
-        .device[data-theme="golden-black"] .seg.on, .device[data-theme="golden-black"] .colon-mark:not(.off) { filter: drop-shadow(0 0 4px #FFD54F); }
+        /* =========================================
+           2. THEMES 11-20: PREMIUM ROYAL HARDWARE
+           ========================================= */
 
-        .device[data-theme="midnight-sapphire"] { --theme-bg: #181C2A; --lcd-text: #6FAEFF; --lcd-ghost: rgba(111, 174, 255, 0.05); --rim-color: #3D7CFF; background: linear-gradient(145deg, #181C2A, #0A0D14); }
-        .device[data-theme="midnight-sapphire"] .seg.on, .device[data-theme="midnight-sapphire"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #6FAEFF); }
-        .device[data-theme="royal-amethyst"] { --theme-bg: #241A3A; --lcd-text: #B88CFF; --lcd-ghost: rgba(184, 140, 255, 0.05); --rim-color: #8A5CFF; background: linear-gradient(145deg, #241A3A, #0D0814); }
-        .device[data-theme="royal-amethyst"] .seg.on, .device[data-theme="royal-amethyst"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #B88CFF); }
-        .device[data-theme="aurora"] { --theme-bg: #1A2438; --lcd-text: #56D7FF; --lcd-ghost: rgba(86, 215, 255, 0.05); --rim-color: #9D4EDD; background: linear-gradient(145deg, #1A2438, #0B101A); }
-        .device[data-theme="aurora"] .seg.on, .device[data-theme="aurora"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #56D7FF); }
-        .device[data-theme="emerald-luxe"] { --theme-bg: #15241D; --lcd-text: #59FFB5; --lcd-ghost: rgba(89, 255, 181, 0.05); --rim-color: #1FD18A; background: linear-gradient(145deg, #15241D, #080D0A); }
-        .device[data-theme="emerald-luxe"] .seg.on, .device[data-theme="emerald-luxe"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #59FFB5); }
-        .device[data-theme="champagne-gold"] { --theme-bg: #222222; --lcd-text: #FFE9A6; --lcd-ghost: rgba(255, 233, 166, 0.05); --rim-color: #D4AF37; background: linear-gradient(145deg, #222222, #000000); }
-        .device[data-theme="champagne-gold"] .seg.on, .device[data-theme="champagne-gold"] .colon-mark:not(.off) { filter: drop-shadow(0 0 5px #FFE9A6); }
-        .device[data-theme="volcanic-orange"] { --theme-bg: #1B1B1B; --lcd-text: #FFB347; --lcd-ghost: rgba(255, 179, 71, 0.05); --rim-color: #FF6A00; background: linear-gradient(145deg, #1B1B1B, #0A0A0A); }
-        .device[data-theme="volcanic-orange"] .seg.on, .device[data-theme="volcanic-orange"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #FFB347); }
-        .device[data-theme="deep-ocean"] { --theme-bg: #0F2430; --lcd-text: #72D9FF; --lcd-ghost: rgba(114, 217, 255, 0.05); --rim-color: #00AEEF; background: linear-gradient(145deg, #0F2430, #050C12); }
-        .device[data-theme="deep-ocean"] .seg.on, .device[data-theme="deep-ocean"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #72D9FF); }
-        .device[data-theme="ruby-crimson"] { --theme-bg: #241517; --lcd-text: #FF8A8A; --lcd-ghost: rgba(255, 138, 138, 0.05); --rim-color: #D62839; background: linear-gradient(145deg, #241517, #0D0708); }
-        .device[data-theme="ruby-crimson"] .seg.on, .device[data-theme="ruby-crimson"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px #FF8A8A); }
+        /* Shared Screen Shadow for Premium Themes */
+        .device[data-theme="royal-black"] .screen, .device[data-theme="titanium"] .screen,
+        .device[data-theme="royal-blue"] .screen, .device[data-theme="imperial-purple"] .screen,
+        .device[data-theme="emerald-royal"] .screen, .device[data-theme="champagne-gold"] .screen,
+        .device[data-theme="obsidian"] .screen, .device[data-theme="burgundy-royale"] .screen,
+        .device[data-theme="gunmetal"] .screen, .device[data-theme="royal-sapphire"] .screen {
+            box-shadow: inset 0 6px 18px rgba(0,0,0,0.8), inset 0 -1px 3px rgba(255,255,255,0.03);
+        }
 
-        .device[data-theme="dark-amber"] { --theme-bg: #140f05; --lcd-text: #ff9f00; --lcd-ghost: rgba(255, 159, 0, 0.015); --rim-color: #ff9f00; }
+        /* 11. Royal Black */
+        .device[data-theme="royal-black"] { --theme-bg: transparent; --lcd-text: #e0e0e0; --lcd-ghost: rgba(224,224,224,0.05); --rim-color: #555555; background: linear-gradient(145deg, #1c1c1e, #0a0a0c); border: 1px solid #2a2a2c; }
+        .device[data-theme="royal-black"] .screen { background: radial-gradient(circle at 50% 40%, #151515 0%, #000000 100%); }
+        .device[data-theme="royal-black"] .bezel { background: #0f0f11; }
+        .device[data-theme="royal-black"] button { background: linear-gradient(to bottom, #2a2a2c, #111112); border-color: #333; color: #e0e0e0; }
+        .device[data-theme="royal-black"] .seg.on, .device[data-theme="royal-black"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 2px rgba(255,255,255,0.2)); }
 
-        /* FIXED LANDSCAPE LAYOUT WITH SAFE AREA (NOTCH) SUPPORT */
+        /* 12. Titanium */
+        .device[data-theme="titanium"] { --theme-bg: transparent; --lcd-text: #b0c4de; --lcd-ghost: rgba(176,196,222,0.05); --rim-color: #7b848c; background: linear-gradient(145deg, #444b52, #22262a); border: 1px solid #5a626a; }
+        .device[data-theme="titanium"] .screen { background: radial-gradient(circle at 50% 40%, #2a2f35 0%, #111418 100%); }
+        .device[data-theme="titanium"] .bezel { background: #1c2024; }
+        .device[data-theme="titanium"] button { background: linear-gradient(to bottom, #50575e, #2c3137); color: #b0c4de; border-color: #646d76; }
+        .device[data-theme="titanium"] .seg.on, .device[data-theme="titanium"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 2px rgba(176,196,222,0.3)); }
+
+        /* 13. Royal Blue */
+        .device[data-theme="royal-blue"] { --theme-bg: transparent; --lcd-text: #8bb8e8; --lcd-ghost: rgba(139,184,232,0.05); --rim-color: #1a4b8c; background: linear-gradient(145deg, #101a2b, #040812); border: 1px solid #1a2a44; }
+        .device[data-theme="royal-blue"] .screen { background: radial-gradient(circle at 50% 40%, #0a111c 0%, #02040a 100%); }
+        .device[data-theme="royal-blue"] .bezel { background: #060b14; }
+        .device[data-theme="royal-blue"] button { background: linear-gradient(to bottom, #162640, #080e1a); color: #8bb8e8; border-color: #1e3659; }
+        .device[data-theme="royal-blue"] .seg.on, .device[data-theme="royal-blue"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 3px rgba(139,184,232,0.4)); }
+
+        /* 14. Imperial Purple */
+        .device[data-theme="imperial-purple"] { --theme-bg: transparent; --lcd-text: #cda8e5; --lcd-ghost: rgba(205,168,229,0.05); --rim-color: #5b2c70; background: linear-gradient(145deg, #1d1124, #0b050f); border: 1px solid #2f1b3b; }
+        .device[data-theme="imperial-purple"] .screen { background: radial-gradient(circle at 50% 40%, #140b1a 0%, #050208 100%); }
+        .device[data-theme="imperial-purple"] .bezel { background: #0d0612; }
+        .device[data-theme="imperial-purple"] button { background: linear-gradient(to bottom, #2a1836, #110917); color: #cda8e5; border-color: #3b224d; }
+        .device[data-theme="imperial-purple"] .seg.on, .device[data-theme="imperial-purple"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 3px rgba(205,168,229,0.3)); }
+
+        /* 15. Emerald Royal */
+        .device[data-theme="emerald-royal"] { --theme-bg: transparent; --lcd-text: #8bd9b2; --lcd-ghost: rgba(139,217,178,0.05); --rim-color: #18593a; background: linear-gradient(145deg, #0e2117, #040c08); border: 1px solid #173826; }
+        .device[data-theme="emerald-royal"] .screen { background: radial-gradient(circle at 50% 40%, #0a1710 0%, #020604 100%); }
+        .device[data-theme="emerald-royal"] .bezel { background: #060f0a; }
+        .device[data-theme="emerald-royal"] button { background: linear-gradient(to bottom, #143322, #081a11); color: #8bd9b2; border-color: #1c452e; }
+        .device[data-theme="emerald-royal"] .seg.on, .device[data-theme="emerald-royal"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 3px rgba(139,217,178,0.3)); }
+
+        /* 16. Champagne Gold */
+        .device[data-theme="champagne-gold"] { --theme-bg: transparent; --lcd-text: #e6c891; --lcd-ghost: rgba(230,200,145,0.05); --rim-color: #a88b50; background: linear-gradient(145deg, #2b2720, #14110d); border: 1px solid #453c2d; }
+        .device[data-theme="champagne-gold"] .screen { background: radial-gradient(circle at 50% 40%, #1a1712 0%, #0a0806 100%); }
+        .device[data-theme="champagne-gold"] .bezel { background: #120f0a; }
+        .device[data-theme="champagne-gold"] button { background: linear-gradient(to bottom, #3b3327, #1c1811); color: #e6c891; border-color: #4f4230; }
+        .device[data-theme="champagne-gold"] .seg.on, .device[data-theme="champagne-gold"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 2px rgba(230,200,145,0.4)); }
+
+        /* 17. Obsidian */
+        .device[data-theme="obsidian"] { --theme-bg: transparent; --lcd-text: #d1d5db; --lcd-ghost: rgba(209,213,219,0.04); --rim-color: #2b2d31; background: linear-gradient(145deg, #18191c, #070809); border: 1px solid #24262a; }
+        .device[data-theme="obsidian"] .screen { background: radial-gradient(circle at 50% 40%, #111214 0%, #020202 100%); box-shadow: inset 0 6px 18px rgba(0,0,0,0.9); }
+        .device[data-theme="obsidian"] .bezel { background: #0a0b0d; }
+        .device[data-theme="obsidian"] button { background: linear-gradient(to bottom, #202226, #0c0d0f); border-color: #2a2c31; color: #d1d5db; }
+        .device[data-theme="obsidian"] .seg.on, .device[data-theme="obsidian"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 1px rgba(255,255,255,0.15)); }
+
+        /* 18. Burgundy Royale */
+        .device[data-theme="burgundy-royale"] { --theme-bg: transparent; --lcd-text: #e6a8af; --lcd-ghost: rgba(230,168,175,0.05); --rim-color: #5c1a23; background: linear-gradient(145deg, #240a0e, #0f0305); border: 1px solid #3d1017; }
+        .device[data-theme="burgundy-royale"] .screen { background: radial-gradient(circle at 50% 40%, #1a0609 0%, #080102 100%); }
+        .device[data-theme="burgundy-royale"] .bezel { background: #0f0305; }
+        .device[data-theme="burgundy-royale"] button { background: linear-gradient(to bottom, #330e13, #170407); color: #e6a8af; border-color: #4a131b; }
+        .device[data-theme="burgundy-royale"] .seg.on, .device[data-theme="burgundy-royale"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 3px rgba(230,168,175,0.3)); }
+
+        /* 19. Gunmetal */
+        .device[data-theme="gunmetal"] { --theme-bg: transparent; --lcd-text: #a1adb8; --lcd-ghost: rgba(161,173,184,0.05); --rim-color: #4a5560; background: linear-gradient(145deg, #2d333b, #15181c); border: 1px solid #3e4650; }
+        .device[data-theme="gunmetal"] .screen { background: radial-gradient(circle at 50% 40%, #1e2228 0%, #0d0f12 100%); }
+        .device[data-theme="gunmetal"] .bezel { background: #14171a; }
+        .device[data-theme="gunmetal"] button { background: linear-gradient(to bottom, #38404a, #1a1e23); color: #a1adb8; border-color: #48525e; }
+        .device[data-theme="gunmetal"] .seg.on, .device[data-theme="gunmetal"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 2px rgba(161,173,184,0.3)); }
+
+        /* 20. Royal Sapphire */
+        .device[data-theme="royal-sapphire"] { --theme-bg: transparent; --lcd-text: #9ec5f5; --lcd-ghost: rgba(158,197,245,0.05); --rim-color: #173663; background: linear-gradient(145deg, #0b1526, #03060d); border: 1px solid #142540; }
+        .device[data-theme="royal-sapphire"] .screen { background: radial-gradient(circle at 50% 40%, #070e1a 0%, #010205 100%); }
+        .device[data-theme="royal-sapphire"] .bezel { background: #040810; }
+        .device[data-theme="royal-sapphire"] button { background: linear-gradient(to bottom, #11203b, #060b17); color: #9ec5f5; border-color: #1a2f52; }
+        .device[data-theme="royal-sapphire"] .seg.on, .device[data-theme="royal-sapphire"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 3px rgba(158,197,245,0.3)); }
+
+        /* LIGHT CUTOFF AND AUTO ROTATE FIX FOR LANDSCAPE */
         @media (orientation: landscape) {
             body { padding: 0; margin: 0; background-color: #000000; }
             .device {
-                max-width: none; width: 100vw; height: 100vh;
-                border-radius: 0; border: none; gap: 2px;
+                max-width: none; 
+                width: 96vw; /* Reduced from 100vw to allow border glow space */
+                height: 94vh; /* Reduced from 100vh */
+                border-radius: 14px; 
+                border: 1px solid #101112; 
+                gap: 4px;
                 display: flex; flex-direction: column; justify-content: space-between;
-                box-shadow: inset 0 0 0 3px var(--rim-color); 
-                padding-top: max(4px, env(safe-area-inset-top));
-                padding-bottom: max(4px, env(safe-area-inset-bottom));
-                padding-left: max(6px, env(safe-area-inset-left));
-                padding-right: max(6px, env(safe-area-inset-right));
+                box-shadow: 0 0 12px 2px var(--rim-color), 0 25px 55px rgba(0,0,0,0.95); 
+                padding: max(4px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(4px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
             }
-            .bezel { flex: 1; padding: 2px; border-radius: 0; box-shadow: none; height: auto; }
-            .screen { flex: 1; height: 100%; border-radius: 0; padding: 4px 16px; display: flex; flex-direction: column; justify-content: flex-start; }
+            .bezel { flex: 1; padding: 4px; border-radius: 10px; box-shadow: inset 0 3px 10px rgba(0,0,0,0.95); height: auto; }
+            .screen { flex: 1; height: 100%; border-radius: 6px; padding: 4px 16px; display: flex; flex-direction: column; justify-content: center; }
             
-            .display-container { height: 68vh; max-width: 98%; gap: 4px; margin-top: 2vh; } 
+            .display-container { height: 60vh; max-width: 98%; gap: 4px; margin-top: 0; } 
             .digit { max-width: none; height: 100%; }
             .colon-svg { flex: 0 0 2.5vw; height: 100%; }
 
             .brand-panel {
-                display: flex !important; height: 2.5vh; margin: 0;
-                align-items: center; justify-content: center; gap: 8px;
+                display: flex !important; height: auto; margin: 2px 0;
+                align-items: center; justify-content: center; gap: 12px;
             }
-            .hardware-brand { font-size: 9px; letter-spacing: 3px; font-weight: 800; }
-            .panel-icon { width: 12px; height: 12px; }
+            .hardware-brand { font-size: 11px; letter-spacing: 3px; font-weight: 800; }
+            .panel-icon { width: 14px; height: 14px; }
 
-            .controls { grid-template-columns: repeat(5, 1fr); height: 9.5vh; gap: 4px; margin-bottom: 2px; }
-            button { height: 100%; font-size: 11px; padding: 0; border-radius: 4px; }
+            .controls { grid-template-columns: repeat(5, 1fr); height: 14vh; gap: 8px; margin-bottom: 0; }
+            button { height: 100%; font-size: 12px; padding: 0; border-radius: 6px; }
             
-            .mode-indicator { font-size: 11px; top: 6px; left: 16px; }
+            .mode-indicator { font-size: 12px; top: 8px; left: 16px; }
             
             .lap-container { 
-                font-size: 11.5px; 
-                max-height: 26px; 
+                font-size: 12px; 
+                max-height: 28px; 
                 width: 250px; 
-                bottom: 2px; 
+                bottom: 4px; 
                 right: 16px; 
                 opacity: 0.95;
             }
         }
 
-        /* SEO Invisible Text */
         .visually-hidden {
             position: absolute; width: 1px; height: 1px; margin: -1px; 
             padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;
@@ -365,14 +414,10 @@
     </div>
 
     <div class="visually-hidden">
-        Eternity Chrono: Distraction-free digital timer built for absolute focus. Highly optimized for NEET and JEE study sessions, Pomodoro tracking, cooking, and intense gym workouts.
+        Eternity Chrono: Distraction-free digital timer built for absolute focus.
     </div>
 
     <script>
-        // Warning in Console
-        console.log("%cHold Up! ✋", "color: red; font-size: 40px; font-weight: bold;");
-        console.log("%cThis UI/UX Design and Code is proudly created and owned by Eternity-009. Please do not copy.", "color: #00ff00; font-size: 16px;");
-
         const segmentSvg = '<svg class="digit" viewBox="0 0 60 96">' +
             '<polygon class="seg a" points="13,2 47,2 51,6 47,10 13,10 9,6" />' +
             '<polygon class="seg b" points="52,8 56,12 56,44 52,48 48,44 48,12" />' +
@@ -391,12 +436,10 @@
         const digitMasks = { 0:63, 1:6, 2:91, 3:79, 4:102, 5:109, 6:125, 7:7, 8:127, 9:111 };
         const segmentNames = ['a','b','c','d','e','f','g'];
         
+        // UPDATED JS ARRAY WITH 10 NEW ROYAL THEMES
         const themes = [
-            'green', 'classic-lcd', 'retro-red', 'blue', 'grey', 'neon-pink', 'cyberpunk', 'gold', 
-            'dark-green', 'dark-cyan', 'dark-white', 'imperial-blue', 'midnight-navy', 'titanium-silver', 
-            'royal-purple', 'emerald-military', 'arctic-ice', 'bronze-copper', 'crimson-red', 
-            'matrix-green', 'golden-black', 'midnight-sapphire', 'royal-amethyst', 'aurora', 
-            'emerald-luxe', 'champagne-gold', 'volcanic-orange', 'deep-ocean', 'ruby-crimson', 'dark-amber'
+            'green', 'classic-lcd', 'retro-red', 'blue', 'grey', 'neon-pink', 'cyberpunk', 'gold', 'dark-green', 'dark-cyan',
+            'royal-black', 'titanium', 'royal-blue', 'imperial-purple', 'emerald-royal', 'champagne-gold', 'obsidian', 'burgundy-royale', 'gunmetal', 'royal-sapphire'
         ];
 
         const soundPathOn = "M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z";
@@ -418,7 +461,7 @@
         let lastTime = 0;
         let lastSaveTime = 0;
         let lastRenderTime = 0;
-        const fpsInterval = 1000 / 30; // 30 FPS throttle
+        const fpsInterval = 1000 / 30;
         let rafId = null;
         let alarmTimeout = null;
         let audioCtx = null;
@@ -438,7 +481,6 @@
                     noSleepVideo.play().catch(e => console.log("NoSleep fallback failed", e));
                 }
             } catch (err) { 
-                console.log("Wake Lock Error:", err); 
                 noSleepVideo.play().catch(()=>{}); 
             }
         }
@@ -473,7 +515,19 @@
                 const s = JSON.parse(raw);
 
                 mode = s.mode || 'timer';
-                theme = s.theme || 'green';
+                
+                // FIX: STARTUP GREEN LOGIC
+                // SessionStorage is cleared when tab/app is hard closed.
+                let isNewSession = !sessionStorage.getItem("SESSION_ACTIVE");
+                if (isNewSession) {
+                    theme = 'green';
+                    sessionStorage.setItem("SESSION_ACTIVE", "true");
+                    s.theme = 'green';
+                    localStorage.setItem(PERSIST_KEY, JSON.stringify(s));
+                } else {
+                    theme = s.theme || 'green';
+                }
+                
                 isSoundEnabled = (s.isSoundEnabled !== undefined) ? s.isSoundEnabled : true;
                 timerSetMs = s.timerSetMs || 0;
                 laps = s.laps || [];
@@ -486,7 +540,7 @@
 
                 if (mode === 'timer') {
                     document.getElementById('mode-indicator').innerText = 'TIMER';
-                    document.getElementById('btn-menu-lap').innerHTML = 'Menu';
+                    document.getElementById('btn-menu-lap').innerText = 'Menu';
                     if (s.isRunning) {
                         currentTimerMs = Math.max(0, (s.currentTimerMs || 0) - offlineDelta);
                         isRunning = true; lastTime = now;
@@ -496,7 +550,7 @@
                     }
                 } else {
                     document.getElementById('mode-indicator').innerText = 'STOPWATCH';
-                    document.getElementById('btn-menu-lap').innerHTML = 'Lap';
+                    document.getElementById('btn-menu-lap').innerText = 'Lap';
                     if (s.isRunning) {
                         stopwatchMs = (s.stopwatchMs || 0) + offlineDelta;
                         isRunning = true; lastTime = now;
@@ -515,10 +569,10 @@
             const iconEl = document.getElementById('btn-sound');
             if(!iconEl) return;
             if (isSoundEnabled) {
-                if(pathEl) pathEl.setAttribute('d', soundPathOn);
+                pathEl.setAttribute('d', soundPathOn);
                 iconEl.classList.remove('muted');
             } else {
-                if(pathEl) pathEl.setAttribute('d', soundPathOff);
+                pathEl.setAttribute('d', soundPathOff);
                 iconEl.classList.add('muted');
             }
         }
@@ -578,7 +632,6 @@
                 }
             } else { stopwatchMs += delta; }
 
-            // 30 FPS Throttle to save battery
             if (now - lastRenderTime >= fpsInterval) {
                 renderDisplay();
                 lastRenderTime = now;
@@ -601,7 +654,6 @@
             const { h, m, s, ms } = formatTime(totalMs);
             
             let targetLayout = "MSms"; 
-            
             if (mode === 'timer') {
                 targetLayout = h > 0 ? "HMS" : "MSms";
             } else if (mode === 'stopwatch' && h > 0) {
@@ -721,6 +773,7 @@
             if (isSoundEnabled) playBeep();
         };
 
+        // AUTO-ROTATE FIX: Added orientation unlock
         window.toggleFullScreen = function() {
             initAudio();
             const doc = window.document;
@@ -732,7 +785,13 @@
             if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
                 if (requestFullScreen) {
                     let promise = requestFullScreen.call(docEl);
-                    if(promise) promise.catch(err => console.log("Fullscreen API error:", err));
+                    if(promise) {
+                        promise.then(() => {
+                            if (screen.orientation && screen.orientation.unlock) {
+                                screen.orientation.unlock();
+                            }
+                        }).catch(err => console.log(err));
+                    }
                 } else if (docEl.webkitEnterFullscreen) {
                     docEl.webkitEnterFullscreen();
                 }
@@ -769,7 +828,6 @@
             if (alarmTimeout) { clearInterval(alarmTimeout); alarmTimeout = null; } 
         }
 
-        // Advanced State Saving Events
         window.addEventListener('beforeunload', saveState);
         window.addEventListener('pagehide', saveState);
         document.addEventListener('freeze', saveState);
@@ -801,7 +859,7 @@
                 initAudio(); stopRunning(); stopAlarm(); closeModal();
                 mode = mode === 'timer' ? 'stopwatch' : 'timer';
                 document.getElementById('mode-indicator').innerText = mode.toUpperCase();
-                document.getElementById('btn-menu-lap').innerHTML = mode === 'timer' ? 'Menu' : 'Lap';
+                document.getElementById('btn-menu-lap').innerText = mode === 'timer' ? 'Menu' : 'Lap';
                 saveState(); renderLaps(); renderDisplay();
             });
 
@@ -823,7 +881,6 @@
             document.getElementById('m-cancel').addEventListener('click', closeModal);
             document.getElementById('m-ok').addEventListener('click', acceptModalInput);
 
-            // Modal Keyboard Support
             document.addEventListener('keydown', (e) => {
                 if (document.getElementById('modal').classList.contains('open')) {
                     if (e.key === 'Enter') acceptModalInput();
