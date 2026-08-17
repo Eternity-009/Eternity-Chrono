@@ -3,6 +3,6 @@
       "target": {
         "namespace": "android_app",
         "package_name": "io.github.eternity_009.twa",
-        "sha256_cert_fingerprints": ["42:02:75:07:AA:3A:5C:73:3A:46:53:EB:2D:45:28:9B:30:C1:37:3F:C4:CF:FF:03:C5:BE:BE:7F:86:7A:32:1E"]
+        "sha256_cert_fingerprints": ["8B:8F:ED:C2:4E:00:B6:28:4D:0C:D9:AA:3B:F8:B2:A7:06:D8:C4:E8:75:39:8C:42:9F:68:74:9A:28:E0:00:98"]
       }
     }]
