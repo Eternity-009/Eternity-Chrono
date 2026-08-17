@@ -1,9 +1,8 @@
 <!-- 
 =========================================================
-* App Name: Eternity Chrono (Timer & Stopwatch)
+* App Name: Eternity Chrono Pro
 * Designer & Developer: Eternity-009
 * Copyright: © 2026 Eternity-009. All rights reserved.
-* Unauthorized copying of this design is strictly prohibited.
 =========================================================
 -->
 <!DOCTYPE html>
@@ -12,57 +11,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <title>Eternity Chrono | Distraction-Free Timer for Study, Gym & Productivity</title>
-    <meta name="description" content="Eternity Chrono is a minimalist, Casio-style digital timer and stopwatch with a screen wake-lock. Perfectly designed for NEET/JEE preparation, Pomodoro study sessions, gym workouts, yoga, cooking, and daily productivity.">
-    <meta name="keywords" content="digital timer, stopwatch, study timer for NEET, JEE timer, pomodoro timer, gym workout timer, kitchen timer, screen awake timer, eternity chrono, ad-free timer">
-    <meta name="author" content="Eternity-009">
+    <title>Eternity Chrono | Premium Focus Timer</title>
+    <meta name="description" content="A premium, hardware-inspired digital timer and stopwatch for maximum productivity.">
     <meta name="theme-color" content="#000000">
 
     <link rel="canonical" href="https://eternity-009.github.io/Eternity-Chrono/">
     <link rel="apple-touch-icon" href="icon-192x192.png">
 
-    <meta property="og:title" content="Eternity Chrono - The Ultimate Focus Timer">
-    <meta property="og:description" content="A distraction-free digital timer for studying, workouts, and productivity. Features a classic retro interface and keeps your screen awake while running.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://eternity-009.github.io/Eternity-Chrono/">
-    <meta property="og:image" content="https://eternity-009.github.io/Eternity-Chrono/preview.jpg">
-    
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Eternity Chrono - The Ultimate Focus Timer">
-    <meta name="twitter:description" content="A distraction-free digital timer for absolute focus.">
-    <meta name="twitter:image" content="https://eternity-009.github.io/Eternity-Chrono/preview.jpg">
-
+    <!-- GOOGLE ANALYTICS (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EEFZ65T8WZ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){
-          if(navigator.onLine) {
-              try { dataLayer.push(arguments); } catch(e) {}
-          }
-      }
+      function gtag(){ if(navigator.onLine) { try { dataLayer.push(arguments); } catch(e) {} } }
       gtag('js', new Date());
       gtag('config', 'G-EEFZ65T8WZ');
-    </script>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Eternity Chrono",
-      "url": "https://eternity-009.github.io/Eternity-Chrono/",
-      "description": "A premium, distraction-free Casio-style digital timer and stopwatch. Designed to solve real-world timing needs like mock tests for JEE/NEET, tracking gym rests, cooking, and using the Pomodoro technique. Includes a built-in screen wake-lock to ensure uninterrupted focus.",
-      "applicationCategory": "ProductivityApplication",
-      "operatingSystem": "Web, Android",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "INR"
-      },
-      "creator": {
-        "@type": "Person",
-        "name": "Eternity-009"
-      }
-    }
     </script>
 
     <link rel="manifest" href="manifest.json">
@@ -72,6 +34,7 @@
             --lcd-text: #000000;       
             --lcd-ghost: rgba(0, 0, 0, 0.025); 
             --rim-color: #7cb971;
+            --glass-bg: rgba(10, 12, 16, 0.95);
         }
 
         * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -85,17 +48,17 @@
             min-height: 100vh; overflow: hidden;
         }
 
-        /* LIGHT CUTOFF FIX: Width changed to 90% */
         .device {
             border-radius: 14px;
             padding: 10px;
-            box-shadow: 0 0 0 2px var(--rim-color), 0 25px 55px rgba(0,0,0,0.95), inset 0 1.5px 1.5px rgba(255,255,255,0.15);
+            box-shadow: 0 0 12px 2px var(--rim-color), 0 25px 55px rgba(0,0,0,0.95), inset 0 1.5px 1.5px rgba(255,255,255,0.15);
             width: 90%; 
             max-width: 415px;
             display: flex; flex-direction: column; gap: 8px;
             transition: all 0.3s ease;
             background: linear-gradient(145deg, #232528, #131416); 
             border: 1px solid #101112;
+            position: relative;
         }
 
         .bezel {
@@ -104,11 +67,12 @@
             border-radius: 10px;
             box-shadow: inset 0 3px 10px rgba(0,0,0,0.95);
             display: flex; flex-direction: column;
+            position: relative;
         }
 
         .screen {
             position: relative;
-            height: 160px;
+            height: 175px; /* Increased from 160px to give extra space for Modal & text */
             border-radius: 6px;
             box-shadow: inset 0 4px 12px rgba(0,0,0,0.5);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -123,105 +87,117 @@
             pointer-events: none; z-index: 2;
         }
 
+        /* TEXT OVERLAP FIX: Kept exactly at the top corners */
         .mode-indicator {
-            position: absolute; top: 8px; left: 12px;
+            position: absolute; top: 10px; left: 14px;
             font-size: 10px; font-weight: 900;
-            color: var(--lcd-text); letter-spacing: 1.5px; opacity: 0.85;
+            color: var(--lcd-text); letter-spacing: 1.5px; opacity: 0.85; z-index: 2;
         }
 
+        .battery-indicator {
+            position: absolute; top: 10px; right: 14px;
+            display: flex; gap: 2px; opacity: 0.85; z-index: 2;
+        }
+
+        .bat-bar { width: 4px; height: 8px; background: var(--lcd-text); transition: opacity 0.3s ease; }
+        .bat-bar.empty { opacity: 0.15; }
+
+        /* Added top margin to pull digits away from the TIMER text */
         .display-container {
             display: flex; align-items: center; justify-content: center;
-            width: 100%; height: 90px; margin: 0 auto; gap: 2px; z-index: 1;
+            width: 100%; height: 90px; margin: 12px auto 0 auto; gap: 2px; z-index: 2;
         }
 
         .digit { flex: 1; max-width: 46px; height: 100%; transform: skewX(-3deg); }
         .colon-svg { flex: 0 0 12px; height: 100%; transform: skewX(-3deg); }
 
         .seg { fill: var(--lcd-ghost); stroke: var(--lcd-ghost); stroke-width: 0.8; transition: fill 0.1s ease; }
-        .seg.on { fill: var(--lcd-text); stroke: var(--lcd-text); stroke-width: 0.8; transition: filter 0.3s ease; }
-        
-        .colon-mark { fill: var(--lcd-text); stroke: var(--lcd-text); stroke-width: 0.5; transition: filter 0.3s ease; }
+        .seg.on { fill: var(--lcd-text); stroke: var(--lcd-text); stroke-width: 0.8; transition: filter 0.1s ease; }
+        .colon-mark { fill: var(--lcd-text); stroke: var(--lcd-text); stroke-width: 0.5; transition: filter 0.1s ease; }
         .colon-mark.off { opacity: 0.05; }
 
         .lap-container {
-            position: absolute; bottom: 6px; right: 12px;
+            position: absolute; bottom: 6px; right: 14px;
             font-family: monospace; font-size: 10px; color: var(--lcd-text);
             font-weight: bold; text-align: right; max-height: 24px; width: 140px;
-            overflow-y: auto; opacity: 0.85; line-height: 1.1; z-index: 1;
+            overflow-y: auto; opacity: 0.85; line-height: 1.1; z-index: 2;
         }
         .lap-container::-webkit-scrollbar { display: none; }
 
         .brand-panel {
             display: flex; align-items: center; justify-content: center; gap: 8px;
-            margin: 2px 0; min-height: 20px;
+            margin: 3px 0; min-height: 20px;
         }
         
         .hardware-brand {
             font-size: 11px; font-weight: 900; letter-spacing: 2px; 
-            color: var(--rim-color);
-            text-shadow: 0 0 10px rgba(255,255,255,0.15);
-            text-transform: uppercase; cursor: pointer;
-            transition: color 0.3s ease;
+            color: var(--rim-color); text-shadow: 0 0 10px rgba(255,255,255,0.15);
+            text-transform: uppercase; cursor: pointer; transition: color 0.3s ease;
         }
 
         .panel-icon {
-            width: 14px; height: 14px; 
-            fill: var(--rim-color);
-            cursor: pointer;
-            transition: all 0.3s ease;
+            width: 14px; height: 14px; fill: var(--rim-color);
+            cursor: pointer; transition: all 0.3s ease;
         }
         .panel-icon.muted { fill: #33373e !important; opacity: 0.4; }
 
         .controls { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
 
         button {
-            background: linear-gradient(to bottom, #2f3236, #141517);
-            border: 1px solid #050607; color: #cbd5e1;
-            font-size: 10px; font-weight: 800; padding: 12px 0;
+            background: linear-gradient(to bottom, #2b2e33, #151618);
+            border: 1px solid #050607; border-top: 1px solid #3c4046;
+            color: #b0b5c0; font-size: 10px; font-weight: 800; padding: 12px 0;
             border-radius: 6px; cursor: pointer;
-            box-shadow: 0 2px 0 #000000, 0 3px 4px rgba(0,0,0,0.7);
+            box-shadow: 0 3px 0 #000, 0 4px 5px rgba(0,0,0,0.6);
             text-transform: uppercase; text-align: center; line-height: 1.2;
-            transition: border 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.1s ease;
         }
-        button:active {
-            transform: translateY(1px);
-            box-shadow: 0 1px 0 #000000, 0 1px 2px rgba(0,0,0,0.6); color: #fff;
-        }
+        button:active { transform: translateY(3px); box-shadow: 0 0px 0 #000; color: #fff; }
 
+        /* MODAL CUTOFF FIX: Perfect padding and auto scroll fallback */
         .modal {
-            position: absolute; inset: 0; background: #08090a; z-index: 10;
-            display: flex; flex-direction: column; padding: 6px; color: #fff;
-            transform: translateY(100%); transition: transform 0.2s ease-out;
-            border-radius: 6px; justify-content: space-between;
+            position: absolute; inset: 0; background: var(--glass-bg); z-index: 10;
+            display: flex; flex-direction: column; padding: 8px 8px 10px 8px; color: #fff;
+            transform: translateY(100%); transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 6px; justify-content: space-between; backdrop-filter: blur(8px);
+            overflow-y: auto; -ms-overflow-style: none; scrollbar-width: none;
         }
+        .modal::-webkit-scrollbar { display: none; }
         .modal.open { transform: translateY(0); }
-        
+
         .modal-input-wrapper {
             display: flex; align-items: center; justify-content: center;
-            background: #000; border: 1px solid #1a1c1e; border-radius: 4px; padding: 4px 0; gap: 2px;
+            background: #000; border: 1px solid #1a1c1e; border-radius: 4px; padding: 4px 0; gap: 4px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
         }
         .modal-input-wrapper input {
-            width: 55px; background: transparent; border: none;
-            color: #ff9f43; font-family: monospace; font-size: 24px;
-            font-weight: bold; text-align: center; outline: none;
+            width: 60px; background: transparent; border: none;
+            color: var(--rim-color); font-family: monospace; font-size: 24px;
+            font-weight: bold; text-align: center; outline: none; transition: color 0.3s ease;
         }
         .modal-input-wrapper span { font-family: monospace; font-size: 20px; color: #444; }
         
-        .modal-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; flex: 1; margin: 5px 0; }
-        .modal-grid button { background: linear-gradient(to bottom, #202325, #101112); font-size: 10px; padding: 0; box-shadow: none; }
-        .modal-grid button.btn-quick { background: linear-gradient(to bottom, #142233, #0a111a); color: #5ea1ff; }
-        .modal-grid button.btn-action { background: linear-gradient(to bottom, #3d1a1a, #1a0b0b); color: #ff5252; grid-column: span 4; height: 28px; }
+        .modal-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; flex: 1; margin: 6px 0; }
+        .modal-grid button { padding: 0; font-size: 11px; background: #111; box-shadow: 0 2px 0 #000; border-top: 1px solid #222; transition: color 0.3s ease; }
         
-        .modal-actions { display: flex; justify-content: space-between; gap: 4px; }
-        .modal-actions span { flex: 1; text-align: center; font-size: 11px; font-weight: bold; padding: 9px 0; border-radius: 4px; cursor: pointer; text-transform: uppercase; }
-        .btn-cancel { background: #252729; color: #a0a5b5; }
-        .btn-ok { background: #143514; color: #52c452; }
+        .modal-grid button.btn-quick { color: var(--rim-color); border: 1px solid #222; }
+        .modal-grid button.btn-action { color: var(--rim-color); grid-column: span 4; height: 28px; border: 1px solid #222; } /* Height refined */
+        
+        .modal-actions { display: flex; justify-content: space-between; gap: 8px; margin-top: 4px; }
+        .modal-actions span {
+            flex: 1; text-align: center; font-size: 12px; font-weight: 900;
+            padding: 8px 0; border-radius: 4px; cursor: pointer; text-transform: uppercase;
+            box-shadow: 0 2px 0 #000; transition: transform 0.1s, color 0.3s ease, border-color 0.3s ease;
+        }
+        .modal-actions span:active { transform: translateY(2px); box-shadow: none; }
+        .btn-cancel { background: #1a1c1e; color: #a0a5b5; border: 1px solid #222; }
+        .btn-ok { background: #080808; color: var(--rim-color); border: 1px solid var(--rim-color); }
 
         @keyframes flash { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(0.3); } }
         .flashing { animation: flash 0.3s infinite; }
 
         /* =========================================
-           1. FIRST 10 THEMES (100% UNTOUCHED ORIGINAL)
+           1. FIRST 10 THEMES (Gold at index 9)
            ========================================= */
         .device[data-theme="green"] { --theme-bg: #7cb971; --lcd-text: #000000; --lcd-ghost: rgba(0, 0, 0, 0.02); --rim-color: #7cb971; } 
         .device[data-theme="classic-lcd"] { --theme-bg: #8aa682; --lcd-text: #1a2018; --lcd-ghost: rgba(26, 32, 24, 0.05); --rim-color: #8aa682; }
@@ -230,103 +206,32 @@
         .device[data-theme="grey"]  { --theme-bg: #a6aeae; --lcd-text: #000000; --lcd-ghost: rgba(0, 0, 0, 0.02); --rim-color: #a6aeae; } 
         .device[data-theme="neon-pink"]   { --theme-bg: #12040c; --lcd-text: #ff1493; --lcd-ghost: rgba(255, 20, 147, 0.04); --rim-color: #ff1493; }
         .device[data-theme="cyberpunk"]   { --theme-bg: #090a14; --lcd-text: #fcee0a; --lcd-ghost: rgba(252, 238, 10, 0.04); --rim-color: #fcee0a; }
-        .device[data-theme="gold"]        { --theme-bg: #141108; --lcd-text: #ffc107; --lcd-ghost: rgba(255, 193, 7, 0.04); --rim-color: #ffc107; }
         .device[data-theme="dark-green"] { --theme-bg: #0d120d; --lcd-text: #00ff66; --lcd-ghost: rgba(0, 255, 102, 0.015); --rim-color: #00ff66; }
         .device[data-theme="dark-cyan"]  { --theme-bg: #051414; --lcd-text: #00f5ff; --lcd-ghost: rgba(0, 245, 255, 0.015); --rim-color: #00f5ff; }
+        .device[data-theme="gold"]        { --theme-bg: #141108; --lcd-text: #ffc107; --lcd-ghost: rgba(255, 193, 7, 0.04); --rim-color: #ffc107; }
 
         /* =========================================
-           2. THEMES 11-20: PREMIUM ROYAL HARDWARE
+           2. THEMES 11-21: PREMIUM ROYAL HARDWARE
            ========================================= */
+        .device[data-theme="royal-black"] .screen, .device[data-theme="titanium"] .screen, .device[data-theme="royal-blue"] .screen, .device[data-theme="imperial-purple"] .screen, .device[data-theme="emerald-royal"] .screen, .device[data-theme="champagne-gold"] .screen, .device[data-theme="obsidian"] .screen, .device[data-theme="burgundy-royale"] .screen, .device[data-theme="gunmetal"] .screen, .device[data-theme="royal-sapphire"] .screen, .device[data-theme="pookie-pink"] .screen { box-shadow: inset 0 6px 18px rgba(0,0,0,0.8), inset 0 -1px 3px rgba(255,255,255,0.03); }
 
-        /* Shared Screen Shadow for Premium Themes */
-        .device[data-theme="royal-black"] .screen, .device[data-theme="titanium"] .screen,
-        .device[data-theme="royal-blue"] .screen, .device[data-theme="imperial-purple"] .screen,
-        .device[data-theme="emerald-royal"] .screen, .device[data-theme="champagne-gold"] .screen,
-        .device[data-theme="obsidian"] .screen, .device[data-theme="burgundy-royale"] .screen,
-        .device[data-theme="gunmetal"] .screen, .device[data-theme="royal-sapphire"] .screen {
-            box-shadow: inset 0 6px 18px rgba(0,0,0,0.8), inset 0 -1px 3px rgba(255,255,255,0.03);
-        }
+        .device[data-theme="royal-black"] { --theme-bg: transparent; --lcd-text: #e0e0e0; --lcd-ghost: rgba(224,224,224,0.05); --rim-color: #555555; background: linear-gradient(145deg, #1c1c1e, #0a0a0c); border: 1px solid #2a2a2c; } .device[data-theme="royal-black"] .screen { background: radial-gradient(circle at 50% 40%, #151515 0%, #000000 100%); } .device[data-theme="royal-black"] .bezel { background: #0f0f11; } .device[data-theme="royal-black"] button { background: linear-gradient(to bottom, #2a2a2c, #111112); border-color: #333; color: #e0e0e0; } .device[data-theme="royal-black"] .seg.on, .device[data-theme="royal-black"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 2px rgba(255,255,255,0.2)); }
+        .device[data-theme="titanium"] { --theme-bg: transparent; --lcd-text: #b0c4de; --lcd-ghost: rgba(176,196,222,0.05); --rim-color: #7b848c; background: linear-gradient(145deg, #444b52, #22262a); border: 1px solid #5a626a; } .device[data-theme="titanium"] .screen { background: radial-gradient(circle at 50% 40%, #2a2f35 0%, #111418 100%); } .device[data-theme="titanium"] .bezel { background: #1c2024; } .device[data-theme="titanium"] button { background: linear-gradient(to bottom, #50575e, #2c3137); color: #b0c4de; border-color: #646d76; } .device[data-theme="titanium"] .seg.on, .device[data-theme="titanium"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 2px rgba(176,196,222,0.3)); }
+        .device[data-theme="royal-blue"] { --theme-bg: transparent; --lcd-text: #8bb8e8; --lcd-ghost: rgba(139,184,232,0.05); --rim-color: #1a4b8c; background: linear-gradient(145deg, #101a2b, #040812); border: 1px solid #1a2a44; } .device[data-theme="royal-blue"] .screen { background: radial-gradient(circle at 50% 40%, #0a111c 0%, #02040a 100%); } .device[data-theme="royal-blue"] .bezel { background: #060b14; } .device[data-theme="royal-blue"] button { background: linear-gradient(to bottom, #162640, #080e1a); color: #8bb8e8; border-color: #1e3659; } .device[data-theme="royal-blue"] .seg.on, .device[data-theme="royal-blue"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 3px rgba(139,184,232,0.4)); }
+        .device[data-theme="imperial-purple"] { --theme-bg: transparent; --lcd-text: #cda8e5; --lcd-ghost: rgba(205,168,229,0.05); --rim-color: #5b2c70; background: linear-gradient(145deg, #1d1124, #0b050f); border: 1px solid #2f1b3b; } .device[data-theme="imperial-purple"] .screen { background: radial-gradient(circle at 50% 40%, #140b1a 0%, #050208 100%); } .device[data-theme="imperial-purple"] .bezel { background: #0d0612; } .device[data-theme="imperial-purple"] button { background: linear-gradient(to bottom, #2a1836, #110917); color: #cda8e5; border-color: #3b224d; } .device[data-theme="imperial-purple"] .seg.on, .device[data-theme="imperial-purple"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 3px rgba(205,168,229,0.3)); }
+        .device[data-theme="emerald-royal"] { --theme-bg: transparent; --lcd-text: #8bd9b2; --lcd-ghost: rgba(139,217,178,0.05); --rim-color: #18593a; background: linear-gradient(145deg, #0e2117, #040c08); border: 1px solid #173826; } .device[data-theme="emerald-royal"] .screen { background: radial-gradient(circle at 50% 40%, #0a1710 0%, #020604 100%); } .device[data-theme="emerald-royal"] .bezel { background: #060f0a; } .device[data-theme="emerald-royal"] button { background: linear-gradient(to bottom, #143322, #081a11); color: #8bd9b2; border-color: #1c452e; } .device[data-theme="emerald-royal"] .seg.on, .device[data-theme="emerald-royal"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 3px rgba(139,217,178,0.3)); }
+        .device[data-theme="champagne-gold"] { --theme-bg: transparent; --lcd-text: #e6c891; --lcd-ghost: rgba(230,200,145,0.05); --rim-color: #a88b50; background: linear-gradient(145deg, #2b2720, #14110d); border: 1px solid #453c2d; } .device[data-theme="champagne-gold"] .screen { background: radial-gradient(circle at 50% 40%, #1a1712 0%, #0a0806 100%); } .device[data-theme="champagne-gold"] .bezel { background: #120f0a; } .device[data-theme="champagne-gold"] button { background: linear-gradient(to bottom, #3b3327, #1c1811); color: #e6c891; border-color: #4f4230; } .device[data-theme="champagne-gold"] .seg.on, .device[data-theme="champagne-gold"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 2px rgba(230,200,145,0.4)); }
+        .device[data-theme="obsidian"] { --theme-bg: transparent; --lcd-text: #d1d5db; --lcd-ghost: rgba(209,213,219,0.04); --rim-color: #2b2d31; background: linear-gradient(145deg, #18191c, #070809); border: 1px solid #24262a; } .device[data-theme="obsidian"] .screen { background: radial-gradient(circle at 50% 40%, #111214 0%, #020202 100%); box-shadow: inset 0 6px 18px rgba(0,0,0,0.9); } .device[data-theme="obsidian"] .bezel { background: #0a0b0d; } .device[data-theme="obsidian"] button { background: linear-gradient(to bottom, #202226, #0c0d0f); border-color: #2a2c31; color: #d1d5db; } .device[data-theme="obsidian"] .seg.on, .device[data-theme="obsidian"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 1px rgba(255,255,255,0.15)); }
+        .device[data-theme="burgundy-royale"] { --theme-bg: transparent; --lcd-text: #e6a8af; --lcd-ghost: rgba(230,168,175,0.05); --rim-color: #5c1a23; background: linear-gradient(145deg, #240a0e, #0f0305); border: 1px solid #3d1017; } .device[data-theme="burgundy-royale"] .screen { background: radial-gradient(circle at 50% 40%, #1a0609 0%, #080102 100%); } .device[data-theme="burgundy-royale"] .bezel { background: #0f0305; } .device[data-theme="burgundy-royale"] button { background: linear-gradient(to bottom, #330e13, #170407); color: #e6a8af; border-color: #4a131b; } .device[data-theme="burgundy-royale"] .seg.on, .device[data-theme="burgundy-royale"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 3px rgba(230,168,175,0.3)); }
+        .device[data-theme="gunmetal"] { --theme-bg: transparent; --lcd-text: #a1adb8; --lcd-ghost: rgba(161,173,184,0.05); --rim-color: #4a5560; background: linear-gradient(145deg, #2d333b, #15181c); border: 1px solid #3e4650; } .device[data-theme="gunmetal"] .screen { background: radial-gradient(circle at 50% 40%, #1e2228 0%, #0d0f12 100%); } .device[data-theme="gunmetal"] .bezel { background: #14171a; } .device[data-theme="gunmetal"] button { background: linear-gradient(to bottom, #38404a, #1a1e23); color: #a1adb8; border-color: #48525e; } .device[data-theme="gunmetal"] .seg.on, .device[data-theme="gunmetal"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 2px rgba(161,173,184,0.3)); }
+        .device[data-theme="royal-sapphire"] { --theme-bg: transparent; --lcd-text: #9ec5f5; --lcd-ghost: rgba(158,197,245,0.05); --rim-color: #173663; background: linear-gradient(145deg, #0b1526, #03060d); border: 1px solid #142540; } .device[data-theme="royal-sapphire"] .screen { background: radial-gradient(circle at 50% 40%, #070e1a 0%, #010205 100%); } .device[data-theme="royal-sapphire"] .bezel { background: #040810; } .device[data-theme="royal-sapphire"] button { background: linear-gradient(to bottom, #11203b, #060b17); color: #9ec5f5; border-color: #1a2f52; } .device[data-theme="royal-sapphire"] .seg.on, .device[data-theme="royal-sapphire"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 3px rgba(158,197,245,0.3)); }
+        .device[data-theme="pookie-pink"] { --theme-bg: transparent; --lcd-text: #ff6b9e; --lcd-ghost: rgba(255,107,158,0.05); --rim-color: #ff85b3; background: linear-gradient(145deg, #2b1b22, #140b10); border: 1px solid #3d232f; } .device[data-theme="pookie-pink"] .screen { background: radial-gradient(circle at 50% 40%, #1c0e14 0%, #0a0407 100%); } .device[data-theme="pookie-pink"] .bezel { background: #12080c; } .device[data-theme="pookie-pink"] button { background: linear-gradient(to bottom, #26131c, #10060b); border-top-color: #381a28; color: #ff85b3; } .device[data-theme="pookie-pink"] .seg.on, .device[data-theme="pookie-pink"] .colon-mark:not(.off) { filter: drop-shadow(0 0 6px rgba(255,107,158,0.5)); }
 
-        /* 11. Royal Black */
-        .device[data-theme="royal-black"] { --theme-bg: transparent; --lcd-text: #e0e0e0; --lcd-ghost: rgba(224,224,224,0.05); --rim-color: #555555; background: linear-gradient(145deg, #1c1c1e, #0a0a0c); border: 1px solid #2a2a2c; }
-        .device[data-theme="royal-black"] .screen { background: radial-gradient(circle at 50% 40%, #151515 0%, #000000 100%); }
-        .device[data-theme="royal-black"] .bezel { background: #0f0f11; }
-        .device[data-theme="royal-black"] button { background: linear-gradient(to bottom, #2a2a2c, #111112); border-color: #333; color: #e0e0e0; }
-        .device[data-theme="royal-black"] .seg.on, .device[data-theme="royal-black"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 2px rgba(255,255,255,0.2)); }
-
-        /* 12. Titanium */
-        .device[data-theme="titanium"] { --theme-bg: transparent; --lcd-text: #b0c4de; --lcd-ghost: rgba(176,196,222,0.05); --rim-color: #7b848c; background: linear-gradient(145deg, #444b52, #22262a); border: 1px solid #5a626a; }
-        .device[data-theme="titanium"] .screen { background: radial-gradient(circle at 50% 40%, #2a2f35 0%, #111418 100%); }
-        .device[data-theme="titanium"] .bezel { background: #1c2024; }
-        .device[data-theme="titanium"] button { background: linear-gradient(to bottom, #50575e, #2c3137); color: #b0c4de; border-color: #646d76; }
-        .device[data-theme="titanium"] .seg.on, .device[data-theme="titanium"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 2px rgba(176,196,222,0.3)); }
-
-        /* 13. Royal Blue */
-        .device[data-theme="royal-blue"] { --theme-bg: transparent; --lcd-text: #8bb8e8; --lcd-ghost: rgba(139,184,232,0.05); --rim-color: #1a4b8c; background: linear-gradient(145deg, #101a2b, #040812); border: 1px solid #1a2a44; }
-        .device[data-theme="royal-blue"] .screen { background: radial-gradient(circle at 50% 40%, #0a111c 0%, #02040a 100%); }
-        .device[data-theme="royal-blue"] .bezel { background: #060b14; }
-        .device[data-theme="royal-blue"] button { background: linear-gradient(to bottom, #162640, #080e1a); color: #8bb8e8; border-color: #1e3659; }
-        .device[data-theme="royal-blue"] .seg.on, .device[data-theme="royal-blue"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 3px rgba(139,184,232,0.4)); }
-
-        /* 14. Imperial Purple */
-        .device[data-theme="imperial-purple"] { --theme-bg: transparent; --lcd-text: #cda8e5; --lcd-ghost: rgba(205,168,229,0.05); --rim-color: #5b2c70; background: linear-gradient(145deg, #1d1124, #0b050f); border: 1px solid #2f1b3b; }
-        .device[data-theme="imperial-purple"] .screen { background: radial-gradient(circle at 50% 40%, #140b1a 0%, #050208 100%); }
-        .device[data-theme="imperial-purple"] .bezel { background: #0d0612; }
-        .device[data-theme="imperial-purple"] button { background: linear-gradient(to bottom, #2a1836, #110917); color: #cda8e5; border-color: #3b224d; }
-        .device[data-theme="imperial-purple"] .seg.on, .device[data-theme="imperial-purple"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 3px rgba(205,168,229,0.3)); }
-
-        /* 15. Emerald Royal */
-        .device[data-theme="emerald-royal"] { --theme-bg: transparent; --lcd-text: #8bd9b2; --lcd-ghost: rgba(139,217,178,0.05); --rim-color: #18593a; background: linear-gradient(145deg, #0e2117, #040c08); border: 1px solid #173826; }
-        .device[data-theme="emerald-royal"] .screen { background: radial-gradient(circle at 50% 40%, #0a1710 0%, #020604 100%); }
-        .device[data-theme="emerald-royal"] .bezel { background: #060f0a; }
-        .device[data-theme="emerald-royal"] button { background: linear-gradient(to bottom, #143322, #081a11); color: #8bd9b2; border-color: #1c452e; }
-        .device[data-theme="emerald-royal"] .seg.on, .device[data-theme="emerald-royal"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 3px rgba(139,217,178,0.3)); }
-
-        /* 16. Champagne Gold */
-        .device[data-theme="champagne-gold"] { --theme-bg: transparent; --lcd-text: #e6c891; --lcd-ghost: rgba(230,200,145,0.05); --rim-color: #a88b50; background: linear-gradient(145deg, #2b2720, #14110d); border: 1px solid #453c2d; }
-        .device[data-theme="champagne-gold"] .screen { background: radial-gradient(circle at 50% 40%, #1a1712 0%, #0a0806 100%); }
-        .device[data-theme="champagne-gold"] .bezel { background: #120f0a; }
-        .device[data-theme="champagne-gold"] button { background: linear-gradient(to bottom, #3b3327, #1c1811); color: #e6c891; border-color: #4f4230; }
-        .device[data-theme="champagne-gold"] .seg.on, .device[data-theme="champagne-gold"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 2px rgba(230,200,145,0.4)); }
-
-        /* 17. Obsidian */
-        .device[data-theme="obsidian"] { --theme-bg: transparent; --lcd-text: #d1d5db; --lcd-ghost: rgba(209,213,219,0.04); --rim-color: #2b2d31; background: linear-gradient(145deg, #18191c, #070809); border: 1px solid #24262a; }
-        .device[data-theme="obsidian"] .screen { background: radial-gradient(circle at 50% 40%, #111214 0%, #020202 100%); box-shadow: inset 0 6px 18px rgba(0,0,0,0.9); }
-        .device[data-theme="obsidian"] .bezel { background: #0a0b0d; }
-        .device[data-theme="obsidian"] button { background: linear-gradient(to bottom, #202226, #0c0d0f); border-color: #2a2c31; color: #d1d5db; }
-        .device[data-theme="obsidian"] .seg.on, .device[data-theme="obsidian"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 1px rgba(255,255,255,0.15)); }
-
-        /* 18. Burgundy Royale */
-        .device[data-theme="burgundy-royale"] { --theme-bg: transparent; --lcd-text: #e6a8af; --lcd-ghost: rgba(230,168,175,0.05); --rim-color: #5c1a23; background: linear-gradient(145deg, #240a0e, #0f0305); border: 1px solid #3d1017; }
-        .device[data-theme="burgundy-royale"] .screen { background: radial-gradient(circle at 50% 40%, #1a0609 0%, #080102 100%); }
-        .device[data-theme="burgundy-royale"] .bezel { background: #0f0305; }
-        .device[data-theme="burgundy-royale"] button { background: linear-gradient(to bottom, #330e13, #170407); color: #e6a8af; border-color: #4a131b; }
-        .device[data-theme="burgundy-royale"] .seg.on, .device[data-theme="burgundy-royale"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 3px rgba(230,168,175,0.3)); }
-
-        /* 19. Gunmetal */
-        .device[data-theme="gunmetal"] { --theme-bg: transparent; --lcd-text: #a1adb8; --lcd-ghost: rgba(161,173,184,0.05); --rim-color: #4a5560; background: linear-gradient(145deg, #2d333b, #15181c); border: 1px solid #3e4650; }
-        .device[data-theme="gunmetal"] .screen { background: radial-gradient(circle at 50% 40%, #1e2228 0%, #0d0f12 100%); }
-        .device[data-theme="gunmetal"] .bezel { background: #14171a; }
-        .device[data-theme="gunmetal"] button { background: linear-gradient(to bottom, #38404a, #1a1e23); color: #a1adb8; border-color: #48525e; }
-        .device[data-theme="gunmetal"] .seg.on, .device[data-theme="gunmetal"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 2px rgba(161,173,184,0.3)); }
-
-        /* 20. Royal Sapphire */
-        .device[data-theme="royal-sapphire"] { --theme-bg: transparent; --lcd-text: #9ec5f5; --lcd-ghost: rgba(158,197,245,0.05); --rim-color: #173663; background: linear-gradient(145deg, #0b1526, #03060d); border: 1px solid #142540; }
-        .device[data-theme="royal-sapphire"] .screen { background: radial-gradient(circle at 50% 40%, #070e1a 0%, #010205 100%); }
-        .device[data-theme="royal-sapphire"] .bezel { background: #040810; }
-        .device[data-theme="royal-sapphire"] button { background: linear-gradient(to bottom, #11203b, #060b17); color: #9ec5f5; border-color: #1a2f52; }
-        .device[data-theme="royal-sapphire"] .seg.on, .device[data-theme="royal-sapphire"] .colon-mark:not(.off) { filter: drop-shadow(0 1px 3px rgba(158,197,245,0.3)); }
-
-        /* LIGHT CUTOFF AND AUTO ROTATE FIX FOR LANDSCAPE */
         @media (orientation: landscape) {
             body { padding: 0; margin: 0; background-color: #000000; }
             .device {
-                max-width: none; 
-                width: 96vw; /* Reduced from 100vw to allow border glow space */
-                height: 94vh; /* Reduced from 100vh */
-                border-radius: 14px; 
-                border: 1px solid #101112; 
-                gap: 4px;
+                max-width: none; width: 96vw; height: 94vh;
+                border-radius: 14px; border: 1px solid #101112; gap: 4px;
                 display: flex; flex-direction: column; justify-content: space-between;
                 box-shadow: 0 0 12px 2px var(--rim-color), 0 25px 55px rgba(0,0,0,0.95); 
                 padding: max(4px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(4px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
@@ -334,36 +239,24 @@
             .bezel { flex: 1; padding: 4px; border-radius: 10px; box-shadow: inset 0 3px 10px rgba(0,0,0,0.95); height: auto; }
             .screen { flex: 1; height: 100%; border-radius: 6px; padding: 4px 16px; display: flex; flex-direction: column; justify-content: center; }
             
-            .display-container { height: 60vh; max-width: 98%; gap: 4px; margin-top: 0; } 
+            /* Margin top 4vh ensures display pushes away from text in Landscape */
+            .display-container { height: 55vh; max-width: 98%; gap: 4px; margin-top: 4vh; } 
             .digit { max-width: none; height: 100%; }
             .colon-svg { flex: 0 0 2.5vw; height: 100%; }
 
-            .brand-panel {
-                display: flex !important; height: auto; margin: 2px 0;
-                align-items: center; justify-content: center; gap: 12px;
-            }
+            .brand-panel { display: flex !important; height: auto; margin: 2px 0; align-items: center; justify-content: center; gap: 12px; }
             .hardware-brand { font-size: 11px; letter-spacing: 3px; font-weight: 800; }
             .panel-icon { width: 14px; height: 14px; }
 
             .controls { grid-template-columns: repeat(5, 1fr); height: 14vh; gap: 8px; margin-bottom: 0; }
             button { height: 100%; font-size: 12px; padding: 0; border-radius: 6px; }
             
-            .mode-indicator { font-size: 12px; top: 8px; left: 16px; }
-            
-            .lap-container { 
-                font-size: 12px; 
-                max-height: 28px; 
-                width: 250px; 
-                bottom: 4px; 
-                right: 16px; 
-                opacity: 0.95;
-            }
+            .mode-indicator { font-size: 12px; top: 12px; left: 16px; }
+            .battery-indicator { top: 12px; right: 16px; }
+            .lap-container { font-size: 12px; max-height: 28px; width: 250px; bottom: 4px; right: 16px; opacity: 0.95; }
         }
 
-        .visually-hidden {
-            position: absolute; width: 1px; height: 1px; margin: -1px; 
-            padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;
-        }
+        .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
     </style>
 </head>
 <body>
@@ -372,6 +265,9 @@
         <div class="bezel">
             <div class="screen" id="screen">
                 <div class="mode-indicator" id="mode-indicator">TIMER</div>
+                <div class="battery-indicator" id="battery">
+                    <div class="bat-bar"></div><div class="bat-bar"></div><div class="bat-bar"></div><div class="bat-bar"></div>
+                </div>
                 <div class="display-container" id="display"></div>
                 <div class="lap-container" id="lap-container"></div>
 
@@ -385,7 +281,7 @@
                     </div>
                     <div class="modal-grid" id="modal-grid-box"></div>
                     <div class="modal-actions">
-                        <span class="btn-cancel" id="m-cancel" role="button" tabindex="0">Cancel</span>
+                        <span class="btn-cancel" id="m-cancel" role="button" tabindex="0">CANCEL</span>
                         <span class="btn-ok" id="m-ok" role="button" tabindex="0">OK</span>
                     </div>
                 </div>
@@ -414,38 +310,45 @@
     </div>
 
     <div class="visually-hidden">
-        Eternity Chrono: Distraction-free digital timer built for absolute focus.
+        Eternity Chrono: Distraction-free digital timer.
     </div>
 
     <script>
-        const segmentSvg = '<svg class="digit" viewBox="0 0 60 96">' +
-            '<polygon class="seg a" points="13,2 47,2 51,6 47,10 13,10 9,6" />' +
-            '<polygon class="seg b" points="52,8 56,12 56,44 52,48 48,44 48,12" />' +
-            '<polygon class="seg c" points="52,49 56,53 56,85 52,89 48,85 48,53" />' +
-            '<polygon class="seg d" points="13,87 47,87 51,91 47,95 13,95 9,91" />' +
-            '<polygon class="seg e" points="8,49 12,53 12,85 8,89 4,85 4,53" />' +
-            '<polygon class="seg f" points="8,8 12,12 12,44 8,48 4,44 4,12" />' +
-            '<polygon class="seg g" points="13,44 47,44 51,48 47,52 13,52 9,48" />' +
-            '</svg>';
-            
-        const colonSvg = '<svg class="colon-svg" viewBox="0 0 16 96">' +
-            '<circle class="colon-mark" cx="8" cy="34" r="5" />' +
-            '<circle class="colon-mark" cx="8" cy="62" r="5" />' +
-            '</svg>';
+        function trackGA4Event(eventName, eventParams = {}) {
+            if (typeof gtag === 'function' && navigator.onLine) {
+                gtag('event', eventName, eventParams);
+            }
+        }
+
+        const getDigit = (id) => `
+        <svg id="${id}" class="digit" viewBox="0 0 60 96">
+            <polygon class="seg a" points="13,2 47,2 51,6 47,10 13,10 9,6" />
+            <polygon class="seg b" points="52,8 56,12 56,44 52,48 48,44 48,12" />
+            <polygon class="seg c" points="52,49 56,53 56,85 52,89 48,85 48,53" />
+            <polygon class="seg d" points="13,87 47,87 51,91 47,95 13,95 9,91" />
+            <polygon class="seg e" points="8,49 12,53 12,85 8,89 4,85 4,53" />
+            <polygon class="seg f" points="8,8 12,12 12,44 8,48 4,44 4,12" />
+            <polygon class="seg g" points="13,44 47,44 51,48 47,52 13,52 9,48" />
+        </svg>`;
+
+        const colonSvg = `
+        <svg class="colon-svg" viewBox="0 0 16 96">
+            <circle class="colon-mark" cx="8" cy="34" r="5" />
+            <circle class="colon-mark" cx="8" cy="62" r="5" />
+        </svg>`;
 
         const digitMasks = { 0:63, 1:6, 2:91, 3:79, 4:102, 5:109, 6:125, 7:7, 8:127, 9:111 };
         const segmentNames = ['a','b','c','d','e','f','g'];
         
-        // UPDATED JS ARRAY WITH 10 NEW ROYAL THEMES
         const themes = [
-            'green', 'classic-lcd', 'retro-red', 'blue', 'grey', 'neon-pink', 'cyberpunk', 'gold', 'dark-green', 'dark-cyan',
-            'royal-black', 'titanium', 'royal-blue', 'imperial-purple', 'emerald-royal', 'champagne-gold', 'obsidian', 'burgundy-royale', 'gunmetal', 'royal-sapphire'
+            'green', 'classic-lcd', 'retro-red', 'blue', 'grey', 'neon-pink', 'cyberpunk', 'dark-green', 'dark-cyan', 'gold',
+            'royal-black', 'titanium', 'royal-blue', 'imperial-purple', 'emerald-royal', 'champagne-gold', 'obsidian', 'burgundy-royale', 'gunmetal', 'royal-sapphire', 'pookie-pink'
         ];
 
         const soundPathOn = "M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z";
         const soundPathOff = "M4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z";
         
-        const PERSIST_KEY = "LAVISH_TIMER_PERSIST_V3";
+        const PERSIST_KEY = "LAVISH_TIMER_PERSIST_V10";
 
         let activeLayout = ""; 
         let mode = 'timer'; 
@@ -468,29 +371,16 @@
         let wakeLock = null;
 
         const noSleepVideo = document.createElement('video');
-        noSleepVideo.setAttribute('playsinline', '');
-        noSleepVideo.setAttribute('muted', '');
-        noSleepVideo.setAttribute('loop', '');
+        noSleepVideo.setAttribute('playsinline', ''); noSleepVideo.setAttribute('muted', ''); noSleepVideo.setAttribute('loop', '');
         noSleepVideo.src = "data:video/webm;base64,GkXfo59ChoEBQveBAULygQRC84EIQoKEd2VibUKHgQJChYECGWCBlGNvbXBNR0kyT0dNNU1XWTJOR1l6WldabVptSm1aV1ptWm1KbVpXWm1abVpoQoOBA0KFA0OAhwEAAIDGCAAAgIgAAIECQAABA0EAQYSEh12BwgT7gICAAALB2YHB4gQCAgABwaIECQAABA0EAQYSEh12BwgT7gICAAALB2YHB4gQCAgABw==";
 
         async function requestWakeLock() {
-            try {
-                if ('wakeLock' in navigator) {
-                    wakeLock = await navigator.wakeLock.request('screen');
-                } else {
-                    noSleepVideo.play().catch(e => console.log("NoSleep fallback failed", e));
-                }
-            } catch (err) { 
-                noSleepVideo.play().catch(()=>{}); 
-            }
+            try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); else noSleepVideo.play().catch(e => {}); } 
+            catch (err) { noSleepVideo.play().catch(()=>{}); }
         }
 
         function releaseWakeLock() {
-            if (wakeLock !== null) {
-                wakeLock.release().then(() => { wakeLock = null; });
-            } else {
-                noSleepVideo.pause();
-            }
+            if (wakeLock !== null) wakeLock.release().then(() => { wakeLock = null; }); else noSleepVideo.pause();
         }
 
         function padZero(num, length) {
@@ -500,34 +390,20 @@
         }
 
         function saveState() {
-            const stateObj = {
-                mode, theme, isRunning, isSoundEnabled,
-                timerSetMs, currentTimerMs, stopwatchMs, laps,
-                timestamp: Date.now()
-            };
+            const stateObj = { mode, theme, isRunning, isSoundEnabled, timerSetMs, currentTimerMs, stopwatchMs, laps, timestamp: Date.now() };
             try { localStorage.setItem(PERSIST_KEY, JSON.stringify(stateObj)); } catch(e){}
         }
 
         function restoreState() {
             try {
                 const raw = localStorage.getItem(PERSIST_KEY);
-                if (!raw) return false;
-                const s = JSON.parse(raw);
-
-                mode = s.mode || 'timer';
-                
-                // FIX: STARTUP GREEN LOGIC
-                // SessionStorage is cleared when tab/app is hard closed.
-                let isNewSession = !sessionStorage.getItem("SESSION_ACTIVE");
-                if (isNewSession) {
-                    theme = 'green';
-                    sessionStorage.setItem("SESSION_ACTIVE", "true");
-                    s.theme = 'green';
-                    localStorage.setItem(PERSIST_KEY, JSON.stringify(s));
-                } else {
-                    theme = s.theme || 'green';
+                if (!raw) {
+                    theme = 'green'; document.getElementById('device').setAttribute('data-theme', theme); return false;
                 }
                 
+                const s = JSON.parse(raw);
+                mode = s.mode || 'timer';
+                theme = s.theme || 'green';
                 isSoundEnabled = (s.isSoundEnabled !== undefined) ? s.isSoundEnabled : true;
                 timerSetMs = s.timerSetMs || 0;
                 laps = s.laps || [];
@@ -540,41 +416,32 @@
 
                 if (mode === 'timer') {
                     document.getElementById('mode-indicator').innerText = 'TIMER';
-                    document.getElementById('btn-menu-lap').innerText = 'Menu';
+                    document.getElementById('btn-menu-lap').innerHTML = 'MENU';
                     if (s.isRunning) {
                         currentTimerMs = Math.max(0, (s.currentTimerMs || 0) - offlineDelta);
-                        isRunning = true; lastTime = now;
-                        rafId = requestAnimationFrame(loop);
-                    } else {
-                        currentTimerMs = s.currentTimerMs !== undefined ? s.currentTimerMs : timerSetMs;
-                    }
+                        if(currentTimerMs <= 0) {
+                            currentTimerMs = 0; trackGA4Event('timer_completed', { mode: 'timer', theme: theme });
+                        } else {
+                            isRunning = true; lastTime = now; rafId = requestAnimationFrame(loop);
+                        }
+                    } else { currentTimerMs = s.currentTimerMs !== undefined ? s.currentTimerMs : timerSetMs; }
                 } else {
                     document.getElementById('mode-indicator').innerText = 'STOPWATCH';
-                    document.getElementById('btn-menu-lap').innerText = 'Lap';
+                    document.getElementById('btn-menu-lap').innerHTML = 'LAP';
                     if (s.isRunning) {
                         stopwatchMs = (s.stopwatchMs || 0) + offlineDelta;
-                        isRunning = true; lastTime = now;
-                        rafId = requestAnimationFrame(loop);
-                    } else {
-                        stopwatchMs = s.stopwatchMs || 0;
-                    }
+                        isRunning = true; lastTime = now; rafId = requestAnimationFrame(loop);
+                    } else { stopwatchMs = s.stopwatchMs || 0; }
                 }
-                renderLaps(); renderDisplay();
-                return true;
+                renderLaps(); renderDisplay(); return true;
             } catch(e) { return false; }
         }
 
         function updateSoundVisuals() {
-            const pathEl = document.getElementById('sound-path');
-            const iconEl = document.getElementById('btn-sound');
+            const pathEl = document.getElementById('sound-path'); const iconEl = document.getElementById('btn-sound');
             if(!iconEl) return;
-            if (isSoundEnabled) {
-                pathEl.setAttribute('d', soundPathOn);
-                iconEl.classList.remove('muted');
-            } else {
-                pathEl.setAttribute('d', soundPathOff);
-                iconEl.classList.add('muted');
-            }
+            if (isSoundEnabled) { if(pathEl) pathEl.setAttribute('d', soundPathOn); iconEl.classList.remove('muted'); } 
+            else { if(pathEl) pathEl.setAttribute('d', soundPathOff); iconEl.classList.add('muted'); }
         }
 
         function checkAndBuildLayout(requiredLayout) {
@@ -582,70 +449,43 @@
             activeLayout = requiredLayout;
             const display = document.getElementById('display');
             if (requiredLayout === "HMS") {
-                display.innerHTML = segmentSvg.replace('class="digit"', 'id="d1" class="digit"') +
-                                    segmentSvg.replace('class="digit"', 'id="d2" class="digit"') + colonSvg +
-                                    segmentSvg.replace('class="digit"', 'id="d3" class="digit"') +
-                                    segmentSvg.replace('class="digit"', 'id="d4" class="digit"') + colonSvg +
-                                    segmentSvg.replace('class="digit"', 'id="d5" class="digit"') +
-                                    segmentSvg.replace('class="digit"', 'id="d6" class="digit"');
+                display.innerHTML = getDigit("d1") + getDigit("d2") + colonSvg + getDigit("d3") + getDigit("d4") + colonSvg + getDigit("d5") + getDigit("d6");
             } else if (requiredLayout === "MSms") {
-                display.innerHTML = segmentSvg.replace('class="digit"', 'id="d1" class="digit"') +
-                                    segmentSvg.replace('class="digit"', 'id="d2" class="digit"') + colonSvg +
-                                    segmentSvg.replace('class="digit"', 'id="d3" class="digit"') +
-                                    segmentSvg.replace('class="digit"', 'id="d4" class="digit"') + colonSvg +
-                                    segmentSvg.replace('class="digit"', 'id="d5" class="digit"') +
-                                    segmentSvg.replace('class="digit"', 'id="d6" class="digit"');
+                display.innerHTML = getDigit("d1") + getDigit("d2") + colonSvg + getDigit("d3") + getDigit("d4") + colonSvg + getDigit("d5") + getDigit("d6");
             } else if (requiredLayout === "HMSms") {
-                display.innerHTML = segmentSvg.replace('class="digit"', 'id="d1" class="digit"') +
-                                    segmentSvg.replace('class="digit"', 'id="d2" class="digit"') + colonSvg +
-                                    segmentSvg.replace('class="digit"', 'id="d3" class="digit"') +
-                                    segmentSvg.replace('class="digit"', 'id="d4" class="digit"') + colonSvg +
-                                    segmentSvg.replace('class="digit"', 'id="d5" class="digit"') +
-                                    segmentSvg.replace('class="digit"', 'id="d6" class="digit"') + colonSvg +
-                                    segmentSvg.replace('class="digit"', 'id="d7" class="digit"') +
-                                    segmentSvg.replace('class="digit"', 'id="d8" class="digit"');
+                display.innerHTML = getDigit("d1") + getDigit("d2") + colonSvg + getDigit("d3") + getDigit("d4") + colonSvg + getDigit("d5") + getDigit("d6") + colonSvg + getDigit("d7") + getDigit("d8");
             }
         }
 
         function setDigit(id, num) {
-            const mask = digitMasks[num];
-            const el = document.getElementById(id);
+            const mask = digitMasks[num]; const el = document.getElementById(id);
             if (!el) return;
             segmentNames.forEach((seg, i) => {
                 const segEl = el.querySelector('.' + seg);
-                if (mask & (1 << i)) segEl.classList.add('on');
-                else segEl.classList.remove('on');
+                if (mask & (1 << i)) segEl.classList.add('on'); else segEl.classList.remove('on');
             });
         }
 
         function loop() {
             if (!isRunning) return;
-            const now = Date.now();
-            const delta = now - lastTime;
-            lastTime = now;
+            const now = Date.now(), delta = now - lastTime; lastTime = now;
 
             if (mode === 'timer') {
                 currentTimerMs -= delta;
                 if (currentTimerMs <= 0) {
-                    currentTimerMs = 0;
-                    stopRunning(); triggerAlarm();
+                    currentTimerMs = 0; stopRunning(); triggerAlarm();
+                    trackGA4Event('timer_completed', { mode: 'timer', theme: theme });
                 }
             } else { stopwatchMs += delta; }
 
-            if (now - lastRenderTime >= fpsInterval) {
-                renderDisplay();
-                lastRenderTime = now;
-            }
-
+            if (now - lastRenderTime >= fpsInterval) { renderDisplay(); lastRenderTime = now; }
             if (now - lastSaveTime > 500) { saveState(); lastSaveTime = now; }
             rafId = requestAnimationFrame(loop);
         }
 
         function formatTime(totalMs) {
-            const h = Math.floor(totalMs / 3600000);
-            const m = Math.floor((totalMs % 3600000) / 60000);
-            const s = Math.floor((totalMs % 60000) / 1000);
-            const ms = Math.floor((totalMs % 1000) / 10);
+            const h = Math.floor(totalMs / 3600000), m = Math.floor((totalMs % 3600000) / 60000);
+            const s = Math.floor((totalMs % 60000) / 1000), ms = Math.floor((totalMs % 1000) / 10);
             return { h, m, s, ms };
         }
 
@@ -653,36 +493,45 @@
             const totalMs = mode === 'timer' ? currentTimerMs : stopwatchMs;
             const { h, m, s, ms } = formatTime(totalMs);
             
-            let targetLayout = "MSms"; 
-            if (mode === 'timer') {
-                targetLayout = h > 0 ? "HMS" : "MSms";
-            } else if (mode === 'stopwatch' && h > 0) {
-                targetLayout = "HMSms"; 
-            }
-            
+            let targetLayout = mode === 'timer' ? (h > 0 ? "HMS" : "MSms") : (h > 0 ? "HMSms" : "MSms");
             checkAndBuildLayout(targetLayout);
             
-            const displayH = Math.min(99, h);
-            if (targetLayout === "HMS") {
-                setDigit('d1', Math.floor(displayH / 10)); setDigit('d2', displayH % 10);
-                setDigit('d3', Math.floor(m / 10));        setDigit('d4', m % 10);
-                setDigit('d5', Math.floor(s / 10));        setDigit('d6', s % 10);
-            } else if (targetLayout === "MSms") {
-                setDigit('d1', Math.floor(m / 10));        setDigit('d2', m % 10);
-                setDigit('d3', Math.floor(s / 10));        setDigit('d4', s % 10);
-                setDigit('d5', Math.floor(ms / 10));       setDigit('d6', ms % 10);
-            } else if (targetLayout === "HMSms") {
-                setDigit('d1', Math.floor(displayH / 10)); setDigit('d2', displayH % 10);
-                setDigit('d3', Math.floor(m / 10));        setDigit('d4', m % 10);
-                setDigit('d5', Math.floor(s / 10));        setDigit('d6', s % 10);
-                setDigit('d7', Math.floor(ms / 10));       setDigit('d8', ms % 10);
-            }
+            const dh = Math.min(99, h);
+            if (targetLayout === "HMS") { setDigit('d1', Math.floor(dh/10)); setDigit('d2', dh%10); setDigit('d3', Math.floor(m/10)); setDigit('d4', m%10); setDigit('d5', Math.floor(s/10)); setDigit('d6', s%10); } 
+            else if (targetLayout === "MSms") { setDigit('d1', Math.floor(m/10)); setDigit('d2', m%10); setDigit('d3', Math.floor(s/10)); setDigit('d4', s%10); setDigit('d5', Math.floor(ms/10)); setDigit('d6', ms%10); } 
+            else if (targetLayout === "HMSms") { setDigit('d1', Math.floor(dh/10)); setDigit('d2', dh%10); setDigit('d3', Math.floor(m/10)); setDigit('d4', m%10); setDigit('d5', Math.floor(s/10)); setDigit('d6', s%10); setDigit('d7', Math.floor(ms/10)); setDigit('d8', ms%10); }
 
             const blinkOn = !isRunning || (Math.floor(Date.now() / 500) % 2 === 0);
-            document.querySelectorAll('.colon-mark').forEach(col => {
-                if (blinkOn || !isRunning) col.classList.remove('off');
-                else col.classList.add('off');
-            });
+            document.querySelectorAll('.colon-mark').forEach(col => { if (blinkOn || !isRunning) col.classList.remove('off'); else col.classList.add('off'); });
+            
+            // FUNCTIONAL BATTERY PROGRESS BAR
+            const bats = document.querySelectorAll('.bat-bar');
+            if (mode === 'timer' && timerSetMs > 0) {
+                const percent = (currentTimerMs / timerSetMs) * 100;
+                let activeBars = 0;
+                if (percent > 75) activeBars = 4;
+                else if (percent > 50) activeBars = 3;
+                else if (percent > 25) activeBars = 2;
+                else if (percent > 0) activeBars = 1;
+                else activeBars = 0;
+
+                bats.forEach((b, i) => {
+                    if (i < activeBars) b.classList.remove('empty');
+                    else b.classList.add('empty');
+                });
+            } else if (mode === 'stopwatch') {
+                if (isRunning) {
+                    const secMod = Math.floor(stopwatchMs / 1000) % 4;
+                    bats.forEach((b, i) => {
+                        if (i <= secMod) b.classList.remove('empty');
+                        else b.classList.add('empty');
+                    });
+                } else {
+                    bats.forEach(b => b.classList.remove('empty'));
+                }
+            } else {
+                bats.forEach(b => b.classList.remove('empty'));
+            }
         }
 
         function renderLaps() {
@@ -694,236 +543,154 @@
 
         function toggleRunning() {
             initAudio(); stopAlarm();
-            if(document.getElementById('modal').classList.contains('open')) return;
-            if (isRunning) stopRunning();
+            
+            // DIRECT START FIX: If modal is open, accept input and START immediately
+            if(document.getElementById('modal').classList.contains('open')) {
+                acceptModalInput();
+            }
+            
+            if (isRunning) { stopRunning(); } 
             else {
                 if (mode === 'timer' && currentTimerMs <= 0) return;
-                isRunning = true; lastTime = Date.now();
-                requestWakeLock();
-                saveState(); rafId = requestAnimationFrame(loop);
+                trackGA4Event(mode === 'timer' ? 'timer_started' : 'stopwatch_started', { mode: mode, theme: theme, duration: mode === 'timer' ? timerSetMs : 0 });
+                isRunning = true; lastTime = Date.now(); requestWakeLock(); saveState(); rafId = requestAnimationFrame(loop);
             }
         }
 
-        function stopRunning() {
-            isRunning = false; cancelAnimationFrame(rafId);
-            releaseWakeLock();
-            saveState(); renderDisplay();
-        }
+        function stopRunning() { isRunning = false; cancelAnimationFrame(rafId); releaseWakeLock(); saveState(); renderDisplay(); }
 
         function resetAll() {
             initAudio(); stopRunning(); stopAlarm();
-            if (mode === 'timer') currentTimerMs = timerSetMs;
-            else { stopwatchMs = 0; laps = []; renderLaps(); }
+            trackGA4Event('timer_reset', { mode: mode, theme: theme });
+            if (mode === 'timer') currentTimerMs = timerSetMs; else { stopwatchMs = 0; laps = []; renderLaps(); }
             saveState(); renderDisplay();
         }
 
         function cycleTheme() {
             initAudio();
-            const currentIndex = themes.indexOf(theme);
-            theme = themes[(currentIndex + 1) % themes.length];
+            const currentIndex = themes.indexOf(theme); theme = themes[(currentIndex + 1) % themes.length];
             document.getElementById('device').setAttribute('data-theme', theme);
+            trackGA4Event('theme_changed', { theme: theme });
             saveState(); playBeep();
         }
 
         function openModal() {
             const { h, m, s } = formatTime(timerSetMs);
-            document.getElementById('input-h').value = h > 0 ? padZero(h, 2) : "";
-            document.getElementById('input-m').value = m > 0 ? padZero(m, 2) : "";
-            document.getElementById('input-s').value = s > 0 ? padZero(s, 2) : "";
+            document.getElementById('input-h').value = h > 0 ? padZero(h, 2) : ""; document.getElementById('input-m').value = m > 0 ? padZero(m, 2) : ""; document.getElementById('input-s').value = s > 0 ? padZero(s, 2) : "";
             document.getElementById('modal').classList.add('open');
+            trackGA4Event('menu_opened', { mode: 'timer' });
         }
 
         function closeModal() {
             document.getElementById('modal').classList.remove('open');
-            document.querySelectorAll('.modal-input-wrapper input').forEach(input => {
-                if(input.value.length === 1) input.value = '0' + input.value;
-                input.blur();
-            });
+            document.querySelectorAll('.modal-input-wrapper input').forEach(input => { if(input.value.length === 1) input.value = '0' + input.value; input.blur(); });
         }
 
         function quickAdjust(secs) {
             initAudio();
-            let h = parseInt(document.getElementById('input-h').value, 10) || 0;
-            let m = parseInt(document.getElementById('input-m').value, 10) || 0;
-            let s = parseInt(document.getElementById('input-s').value, 10) || 0;
+            let h = parseInt(document.getElementById('input-h').value, 10) || 0; let m = parseInt(document.getElementById('input-m').value, 10) || 0; let s = parseInt(document.getElementById('input-s').value, 10) || 0;
             let totalSecs = Math.min(359999, Math.max(0, (h * 3600) + (m * 60) + s + secs));
-            
-            document.getElementById('input-h').value = padZero(Math.floor(totalSecs / 3600), 2);
-            document.getElementById('input-m').value = padZero(Math.floor((totalSecs % 3600) / 60), 2);
-            document.getElementById('input-s').value = padZero(totalSecs % 60, 2);
+            document.getElementById('input-h').value = padZero(Math.floor(totalSecs / 3600), 2); document.getElementById('input-m').value = padZero(Math.floor((totalSecs % 3600) / 60), 2); document.getElementById('input-s').value = padZero(totalSecs % 60, 2);
         }
 
         function acceptModalInput() {
             initAudio();
-            let h = parseInt(document.getElementById('input-h').value, 10) || 0;
-            let m = parseInt(document.getElementById('input-m').value, 10) || 0;
-            let s = parseInt(document.getElementById('input-s').value, 10) || 0;
+            let h = parseInt(document.getElementById('input-h').value, 10) || 0; let m = parseInt(document.getElementById('input-m').value, 10) || 0; let s = parseInt(document.getElementById('input-s').value, 10) || 0;
             let totalSecs = (h * 3600) + (m * 60) + s;
-            
-            if(totalSecs > 359999) totalSecs = 359999;
-            timerSetMs = totalSecs * 1000;
-            currentTimerMs = timerSetMs;
-            
+            if(totalSecs > 359999) totalSecs = 359999; timerSetMs = totalSecs * 1000; currentTimerMs = timerSetMs;
             closeModal(); saveState(); renderDisplay();
         }
 
         window.toggleSoundMaster = function() {
-            initAudio(); isSoundEnabled = !isSoundEnabled;
-            updateSoundVisuals(); saveState();
-            if (isSoundEnabled) playBeep();
+            initAudio(); isSoundEnabled = !isSoundEnabled; updateSoundVisuals(); saveState(); trackGA4Event('sound_changed', { enabled: isSoundEnabled }); if (isSoundEnabled) playBeep();
         };
 
-        // AUTO-ROTATE FIX: Added orientation unlock
-        window.toggleFullScreen = function() {
-            initAudio();
-            const doc = window.document;
-            const docEl = doc.documentElement;
+        // AUTO-ROTATE FIX (Bypass Phone Settings via Modern API)
+        window.toggleFullScreen = async function() {
+            initAudio(); trackGA4Event('fullscreen_toggle', {});
+            const doc = window.document; const docEl = doc.documentElement;
 
-            const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-            const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
-            if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-                if (requestFullScreen) {
-                    let promise = requestFullScreen.call(docEl);
-                    if(promise) {
-                        promise.then(() => {
-                            if (screen.orientation && screen.orientation.unlock) {
-                                screen.orientation.unlock();
-                            }
-                        }).catch(err => console.log(err));
+            if (!doc.fullscreenElement) {
+                try {
+                    if (docEl.requestFullscreen) await docEl.requestFullscreen();
+                    else if (docEl.webkitRequestFullscreen) await docEl.webkitRequestFullscreen();
+                    if (screen.orientation && screen.orientation.lock) {
+                        await screen.orientation.lock('landscape');
                     }
-                } else if (docEl.webkitEnterFullscreen) {
-                    docEl.webkitEnterFullscreen();
-                }
-            }
-            else {
-                if (cancelFullScreen) cancelFullScreen.call(doc).catch(err => console.log(err));
+                } catch (err) { console.log(err); }
+            } else {
+                try {
+                    if (doc.exitFullscreen) await doc.exitFullscreen();
+                    if (screen.orientation && screen.orientation.unlock) {
+                        screen.orientation.unlock();
+                    }
+                } catch (err) { console.log(err); }
             }
         };
 
-        function initAudio() { 
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); 
-            if (audioCtx.state === 'suspended') audioCtx.resume(); 
-        }
+        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === 'suspended') audioCtx.resume(); }
         
         function playBeep() {
             if (!audioCtx || !isSoundEnabled) return; 
             const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
             osc.type = 'square'; osc.frequency.setValueAtTime(2300, audioCtx.currentTime);
             osc.connect(gain); gain.connect(audioCtx.destination); osc.start();
-            gain.gain.setValueAtTime(0.12, audioCtx.currentTime); 
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+            gain.gain.setValueAtTime(0.12, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
             osc.stop(audioCtx.currentTime + 0.08);
         }
         
         function triggerAlarm() { 
-            stopAlarm(); 
-            document.getElementById('screen').classList.add('flashing'); playBeep(); 
-            let count = 0;
-            alarmTimeout = setInterval(() => { playBeep(); count++; if (count > 25) stopAlarm(); }, 400); 
+            stopAlarm(); document.getElementById('screen').classList.add('flashing'); playBeep(); 
+            let count = 0; alarmTimeout = setInterval(() => { playBeep(); count++; if (count > 25) stopAlarm(); }, 400); 
         }
-        
-        function stopAlarm() { 
-            document.getElementById('screen').classList.remove('flashing'); 
-            if (alarmTimeout) { clearInterval(alarmTimeout); alarmTimeout = null; } 
-        }
+        function stopAlarm() { document.getElementById('screen').classList.remove('flashing'); if (alarmTimeout) { clearInterval(alarmTimeout); alarmTimeout = null; } }
 
-        window.addEventListener('beforeunload', saveState);
-        window.addEventListener('pagehide', saveState);
-        document.addEventListener('freeze', saveState);
-        
-        document.addEventListener('visibilitychange', () => { 
-            if(document.visibilityState === 'hidden') {
-                saveState(); 
-            } else {
-                if (isRunning) requestWakeLock(); 
-                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-            }
-        });
+        window.addEventListener('beforeunload', saveState); window.addEventListener('pagehide', saveState); document.addEventListener('freeze', saveState);
+        document.addEventListener('visibilitychange', () => { if(document.visibilityState === 'hidden') { saveState(); } else { if (isRunning) requestWakeLock(); if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); } });
 
         document.addEventListener("DOMContentLoaded", () => {
             if (!restoreState()) renderDisplay();
-
-            const brandEl = document.getElementById('brand-header');
-            if (brandEl) {
-                brandEl.addEventListener('click', function() {
-                    this.innerText = this.innerText === "ETERNITY CHRONO" ? "LAVISH EDITION" : "ETERNITY CHRONO";
-                });
-            }
-
+            const brandEl = document.getElementById('brand-header'); if (brandEl) { brandEl.addEventListener('click', function() { this.innerText = this.innerText === "ETERNITY CHRONO" ? "LAVISH EDITION" : "ETERNITY CHRONO"; }); }
             document.getElementById('btn-start').addEventListener('click', toggleRunning);
             document.getElementById('btn-reset').addEventListener('click', resetAll);
             document.getElementById('btn-theme').addEventListener('click', cycleTheme);
 
             document.getElementById('btn-mode').addEventListener('click', () => {
-                initAudio(); stopRunning(); stopAlarm(); closeModal();
-                mode = mode === 'timer' ? 'stopwatch' : 'timer';
-                document.getElementById('mode-indicator').innerText = mode.toUpperCase();
-                document.getElementById('btn-menu-lap').innerText = mode === 'timer' ? 'Menu' : 'Lap';
+                initAudio(); stopRunning(); stopAlarm(); closeModal(); mode = mode === 'timer' ? 'stopwatch' : 'timer';
+                document.getElementById('mode-indicator').innerText = mode.toUpperCase(); document.getElementById('btn-menu-lap').innerText = mode === 'timer' ? 'MENU' : 'LAP';
                 saveState(); renderLaps(); renderDisplay();
             });
 
             document.getElementById('btn-menu-lap').addEventListener('click', () => {
                 initAudio(); stopAlarm();
-                if (mode === 'timer') {
-                    if (document.getElementById('modal').classList.contains('open')) closeModal();
-                    else { stopRunning(); openModal(); }
-                } else {
+                if (mode === 'timer') { if (document.getElementById('modal').classList.contains('open')) closeModal(); else { stopRunning(); openModal(); } } 
+                else {
                     if (isRunning) {
                         const { h, m, s, ms } = formatTime(stopwatchMs);
                         const str = h > 0 ? `${padZero(h,2)}:${padZero(m,2)}:${padZero(s,2)}` : `${padZero(m,2)}:${padZero(s,2)}.${padZero(ms,2)}`;
-                        if (laps.length >= 300) laps.shift(); 
-                        laps.push(str); saveState(); renderLaps();
+                        if (laps.length >= 300) laps.shift(); laps.push(str); saveState(); renderLaps();
+                        trackGA4Event('lap_added', { lap_count: laps.length });
                     }
                 }
             });
 
-            document.getElementById('m-cancel').addEventListener('click', closeModal);
-            document.getElementById('m-ok').addEventListener('click', acceptModalInput);
+            document.getElementById('m-cancel').addEventListener('click', closeModal); document.getElementById('m-ok').addEventListener('click', acceptModalInput);
 
-            document.addEventListener('keydown', (e) => {
-                if (document.getElementById('modal').classList.contains('open')) {
-                    if (e.key === 'Enter') acceptModalInput();
-                    if (e.key === 'Escape') closeModal();
-                }
-            });
+            document.addEventListener('keydown', (e) => { if (document.getElementById('modal').classList.contains('open')) { if (e.key === 'Enter') acceptModalInput(); if (e.key === 'Escape') closeModal(); } });
 
             const gridBox = document.getElementById('modal-grid-box');
-            const cfgs = [
-                { t: '+1H', s: 3600 }, { t: '+5M', s: 300 }, { t: '+30S', s: 30 }, { t: '+5S', s: 5 },
-                { t: '-1H', s: -3600 }, { t: '-5M', s: -300 }, { t: '-30S', s: -30 }, { t: '-5S', s: -5 }
-            ];
-            cfgs.forEach(c => {
-                const b = document.createElement('button'); b.className = 'btn-quick'; b.innerText = c.t;
-                b.addEventListener('click', () => quickAdjust(c.s)); gridBox.appendChild(b);
+            [{ t: '+1H', s: 3600 }, { t: '+5M', s: 300 }, { t: '+30S', s: 30 }, { t: '+5S', s: 5 }, { t: '-1H', s: -3600 }, { t: '-5M', s: -300 }, { t: '-30S', s: -30 }, { t: '-5S', s: -5 }].forEach(c => {
+                const b = document.createElement('button'); b.className = 'btn-quick'; b.innerText = c.t; b.addEventListener('click', () => quickAdjust(c.s)); gridBox.appendChild(b);
             });
-
             const clr = document.createElement('button'); clr.className = 'btn-action'; clr.innerText = 'CLEAR MATRIX';
-            clr.addEventListener('click', () => {
-                initAudio();
-                document.getElementById('input-h').value = ""; document.getElementById('input-m').value = ""; document.getElementById('input-s').value = "";
-            });
+            clr.addEventListener('click', () => { initAudio(); document.getElementById('input-h').value = ""; document.getElementById('input-m').value = ""; document.getElementById('input-s').value = ""; });
             gridBox.appendChild(clr);
 
-            document.querySelectorAll('.modal-input-wrapper input').forEach(inp => {
-                inp.addEventListener('input', (e) => {
-                    let max = parseInt(e.target.max, 10);
-                    let val = parseInt(e.target.value, 10) || 0;
-                    if (val > max) e.target.value = max; 
-                    if (e.target.value.length > 2) e.target.value = e.target.value.slice(0, 2);
-                });
-            });
+            document.querySelectorAll('.modal-input-wrapper input').forEach(inp => { inp.addEventListener('input', (e) => { let max = parseInt(e.target.max, 10); let val = parseInt(e.target.value, 10) || 0; if (val > max) e.target.value = max; if (e.target.value.length > 2) e.target.value = e.target.value.slice(0, 2); }); });
         });
     </script>
     <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js').catch(err => {
-         console.log('ServiceWorker registration failed: ', err);
-      });
-    });
-  }
-</script>
-
+      if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => { console.log('SW Registration failed: ', err); }); }); }
+    </script>
 </body>
 </html>
