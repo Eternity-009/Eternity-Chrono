@@ -1,4 +1,4 @@
-const CACHE_NAME = 'eternity-chrono-v6';
+const CACHE_NAME = 'eternity-chrono-v7';
 const urlsToCache = [
   './',
   './index.html',
@@ -30,10 +30,12 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
+// OFFLINE FIRST - Pehle phone ki memory se dega, net nahi use karega
 self.addEventListener('fetch', event => {
   event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match(event.request);
-    })
+    caches.match(event.request)
+      .then(response => {
+        return response || fetch(event.request);
+      })
   );
 });
