@@ -1,10 +1,9 @@
-const CACHE_NAME = 'eternity-chrono-v5';
+const CACHE_NAME = 'eternity-chrono-v6';
 const urlsToCache = [
   './',
   './index.html',
   './icon.png',
-  './manifest.json',
-  './sw.js'
+  './manifest.json'
 ];
 
 self.addEventListener('install', event => {
@@ -15,21 +14,6 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Agar file cache mein hai toh wahi se do (Offline chalega)
-        if (response) {
-          return response;
-        }
-        // Warna net se uthao
-        return fetch(event.request);
-      })
-  );
-});
-
-// Purane cache ko delete karne ke liye taaki hamesha naya update mile
 self.addEventListener('activate', event => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
@@ -44,4 +28,12 @@ self.addEventListener('activate', event => {
     })
   );
   self.clients.claim();
+});
+
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    fetch(event.request).catch(() => {
+      return caches.match(event.request);
+    })
+  );
 });
