@@ -4,7 +4,7 @@
   "short_name": "Eternity Chrono",
   "description": "Premium Distraction-Free Digital Timer and Stopwatch for maximum productivity.",
   "start_url": "./index.html",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#000000",
   "theme_color": "#000000",
   "orientation": "any",
