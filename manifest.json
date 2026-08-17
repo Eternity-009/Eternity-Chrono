@@ -1,7 +1,7 @@
 {
   "id": "com.eternity.chrono",
-  "name": "Eternity Chrono Pro",
-  "short_name": "Eternity",
+  "name": "Eternity Chrono",
+  "short_name": "Eternity Chrono",
   "description": "Premium Distraction-Free Digital Timer and Stopwatch for maximum productivity.",
   "start_url": "./index.html",
   "display": "standalone",
