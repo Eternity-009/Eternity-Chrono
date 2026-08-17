@@ -1,4 +1,4 @@
-const CACHE_NAME = 'eternity-chrono-v7';
+const CACHE_NAME = 'eternity-chrono-v11';
 const urlsToCache = [
   './',
   './index.html',
